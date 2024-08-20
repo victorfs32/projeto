@@ -146,7 +146,16 @@ h3 {
 }
 
 /* Regras gerais para a visualização em telas pequenas */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
+  img.logo{
+    margin-top: 80px;
+    max-width: 60%;
+    max-height: 50%;
+    margin-bottom: 71px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+  }
   .activities {
     flex-direction: column;
     /* Alinha as atividades em coluna em vez de linha */
@@ -170,17 +179,16 @@ h3 {
   }
 
   h3 {
-    font-size: 24px;
+    font-size: 30px;
     /* Diminui o tamanho da fonte para cabeçalhos em telas pequenas */
     margin-top: 30px;
     /* Ajusta a margem superior */
   }
 
   .App-footer p {
-    font-size: 12px;
+    font-size: 20px;
     /* Diminui o tamanho da fonte para o footer */
   }
-}
 
 /* Regras para dispositivos muito pequenos, como telefones */
 @media (max-width: 480px) {

@@ -57,7 +57,7 @@ function App() {
       <footer className="App-footer">
         <p>&copy; 2024 Ensinando Libras. Todos os direitos reservados.</p>
         <p>
-          <a href="https://www.seusite.com" className="footer-link">
+          <a href="https://www.ensinandolibras.com.br/" className="footer-link">
             Visite nosso site
           </a>
         </p>
