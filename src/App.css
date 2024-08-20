@@ -85,7 +85,6 @@ h3 {
   border-radius: 12px;
   /* Bordas arredondadas para as imagens */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  /* Sombra suave nas imagens */
 }
 
 .activities img:hover {
@@ -146,16 +145,12 @@ h3 {
 }
 
 /* Regras gerais para a visualização em telas pequenas */
-@media (max-width: 600px) {
-  img.logo{
+@media (max-width: 932px) {
+  img.logo {
     margin-top: 80px;
-    max-width: 60%;
-    max-height: 50%;
-    margin-bottom: 71px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-}
+    max-width: 50%;
   }
+
   .activities {
     flex-direction: column;
     /* Alinha as atividades em coluna em vez de linha */
@@ -170,13 +165,6 @@ h3 {
     /* Ajusta a largura dos links para ocupar 100% da largura disponível */
   }
 
-  .img.logo {
-    max-width: 80%;
-    /* Ajusta o tamanho da logo para se adequar melhor a telas menores */
-    margin-top: 20px;
-    margin-bottom: 20px;
-    /* Reduz as margens para telas menores */
-  }
 
   h3 {
     font-size: 30px;
@@ -189,10 +177,13 @@ h3 {
     font-size: 12px;
     /* Diminui o tamanho da fonte para o footer */
   }
+}
 
 /* Regras para dispositivos muito pequenos, como telefones */
-@media (max-width: 480px) {
-  .App-header, .App-footer {
+@media (max-width: 430px) {
+
+  .App-header,
+  .App-footer {
     padding: 10px;
     /* Reduz o padding do header e footer */
   }
