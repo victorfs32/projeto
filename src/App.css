@@ -144,3 +144,54 @@ h3 {
   color: #6a5acd;
   /* Cor do link visitado */
 }
+
+/* Regras gerais para a visualização em telas pequenas */
+@media (max-width: 768px) {
+  .activities {
+    flex-direction: column;
+    /* Alinha as atividades em coluna em vez de linha */
+    gap: 20px;
+    /* Reduz o espaçamento entre as atividades */
+    margin-top: 20px;
+    /* Ajusta a margem superior */
+  }
+
+  .activities a {
+    width: 100%;
+    /* Ajusta a largura dos links para ocupar 100% da largura disponível */
+  }
+
+  .img.logo {
+    max-width: 80%;
+    /* Ajusta o tamanho da logo para se adequar melhor a telas menores */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    /* Reduz as margens para telas menores */
+  }
+
+  h3 {
+    font-size: 24px;
+    /* Diminui o tamanho da fonte para cabeçalhos em telas pequenas */
+    margin-top: 30px;
+    /* Ajusta a margem superior */
+  }
+
+  .App-footer p {
+    font-size: 12px;
+    /* Diminui o tamanho da fonte para o footer */
+  }
+}
+
+/* Regras para dispositivos muito pequenos, como telefones */
+@media (max-width: 480px) {
+  .App-header,
+  .App-footer {
+    padding: 10px;
+    /* Reduz o padding do header e footer */
+  }
+
+  .activities h4 {
+    font-size: 16px;
+    /* Diminui o tamanho da fonte dos títulos das atividades */
+  }
+}
