@@ -157,7 +157,7 @@ h3 {
   }
 
   .activities a {
-    width: 100%;
+    width: 50%;
     /* Ajusta a largura dos links para ocupar 100% da largura disponível */
   }
 
@@ -184,8 +184,7 @@ h3 {
 
 /* Regras para dispositivos muito pequenos, como telefones */
 @media (max-width: 480px) {
-  .App-header,
-  .App-footer {
+  .App-header, .App-footer {
     padding: 10px;
     /* Reduz o padding do header e footer */
   }
