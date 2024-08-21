@@ -6,7 +6,7 @@ import abcImg from "./img/ABC.png";
 import saudacoesImg from "./img/SAUDAÇOES.png";
 import numeroImg from "./img/NUMERO.png";
 import Alfabeto from "./pages/Quiz/Alfabeto";
-import Saudações from "./pages/Quiz/Saudações";
+import Saudacoes from "./pages/Quiz/Saudacoes";
 import Numeros from "./pages/Quiz/Numeros";
 
 function App() {
@@ -53,7 +53,7 @@ function App() {
       {/* Rotas */}
       <Routes>
         <Route path="/Alfabeto" element={<Alfabeto />} />
-        <Route path="/Saudacoes" element={<Saudações />} />
+        <Route path="/Saudacoes" element={<Saudacoes />} />
         <Route path="/Numeros" element={<Numeros />} />
       </Routes>
     </div>
