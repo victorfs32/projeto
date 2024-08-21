@@ -143,7 +143,7 @@ function Quiz({ userName }) {
       {showScore ? (
         <div className="score-section">
           <h2>
-            {userName}, você acertou {score} de {questions.length} perguntas!
+            {userName} Você acertou {score} de {questions.length} perguntas!
           </h2>
         </div>
       ) : (
