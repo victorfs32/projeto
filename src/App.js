@@ -7,6 +7,7 @@ import saudacoesImg from "./img/SAUDAÇOES.png";
 import numeroImg from "./img/NUMERO.png";
 import Alfabeto from "./pages/Quiz/Alfabeto";
 import Saudações from "./pages/Quiz/Saudações";
+import Numeros from "./pages/Quiz/Numeros";
 
 function App() {
   return (
@@ -20,41 +21,20 @@ function App() {
       <main className="App-main">
         <h3>ATIVIDADES</h3>
         <div className="activities">
-          <a
-            href="/Alfabeto"
-            className="activity-link"
-          >
-            <img
-              src={abcImg}
-              className="activity-img"
-              alt="Alfabeto em LIBRAS"
-            />
+          <a href="/Alfabeto" className="activity-link">
+            <img src={abcImg} className="activity-img" alt="Alfabeto em LIBRAS" />
             <h4>Alfabeto em LIBRAS</h4>
           </a>
-          <a
-            href="/Saudacoes"
-            className="activity-link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src={saudacoesImg}
-              className="activity-img"
-              alt="Saudações em LIBRAS"
-            />
+          <a href="/Saudacoes" className="activity-link">
+            <img src={saudacoesImg} className="activity-img" alt="Saudações em LIBRAS" />
             <h4>Saudações em LIBRAS</h4>
           </a>
           <a
-            href="https://kahoot.it/solo/?quizId=fdfca022-a08f-4e93-8676-734981889aaa"
+            href="/Numeros"
             className="activity-link"
-            target="_blank"
             rel="noopener noreferrer"
           >
-            <img
-              src={numeroImg}
-              className="activity-img"
-              alt="Números em LIBRAS"
-            />
+            <img src={numeroImg} className="activity-img" alt="Números em LIBRAS" />
             <h4>Números em LIBRAS</h4>
           </a>
         </div>
@@ -70,9 +50,11 @@ function App() {
         </p>
       </footer>
 
+      {/* Rotas */}
       <Routes>
-        <Route path="/Saudacões" element={<Saudações/>} />
         <Route path="/Alfabeto" element={<Alfabeto />} />
+        <Route path="/Saudacoes" element={<Saudações />} />
+        <Route path="/Numeros" element={<Numeros />} />
       </Routes>
     </div>
   );
