@@ -70,4 +70,16 @@
       padding: 8px;
     }
   }
+  /* Estilos adicionais para o vídeo */
+.video-container {
+    margin: 20px 0;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  iframe {
+    border: none;
+    border-radius: 10px;
+  }
   

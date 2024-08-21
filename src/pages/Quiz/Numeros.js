@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "./Quiz.css"; // CSS
+import video1 from "./videos/video2.mp4"; // Importando o vídeo local
+import video2 from "./videos/video2.mp4"; // Importando o segundo vídeo
 
 const questions = [
   {
     questionText: "Que Número é esse?",
+    videoSrc: video1, // Referência ao vídeo local
     answerOptions: [
       { answerText: "A", isCorrect: true },
       { answerText: "B", isCorrect: false },
@@ -13,6 +16,7 @@ const questions = [
   },
   {
     questionText: "Que Número é esse?",
+    videoSrc: video2, // Referência ao segundo vídeo local
     answerOptions: [
       { answerText: "Boa Noite", isCorrect: false },
       { answerText: "Olá", isCorrect: false },
@@ -20,80 +24,7 @@ const questions = [
       { answerText: "Adeus", isCorrect: false },
     ],
   },
-  {
-    questionText: "Que Número é esse?",
-    answerOptions: [
-      { answerText: "Boa Noite", isCorrect: false },
-      { answerText: "Olá", isCorrect: false },
-      { answerText: "Bom Dia", isCorrect: true },
-      { answerText: "Adeus", isCorrect: false },
-],
-},
-{
-  questionText: "Que Número é esse?",
-  answerOptions: [
-    { answerText: "Boa Noite", isCorrect: false },
-    { answerText: "Olá", isCorrect: false },
-    { answerText: "Bom Dia", isCorrect: true },
-    { answerText: "Adeus", isCorrect: false },
-],
-},
-{
-  questionText: "Que Número é esse?",
-  answerOptions: [
-    { answerText: "Boa Noite", isCorrect: false },
-    { answerText: "Olá", isCorrect: false },
-    { answerText: "Bom Dia", isCorrect: true },
-    { answerText: "Adeus", isCorrect: false },
-],
-},
-{
-  questionText: "Que Número é esse?",
-  answerOptions: [
-    { answerText: "Boa Noite", isCorrect: false },
-    { answerText: "Olá", isCorrect: false },
-    { answerText: "Bom Dia", isCorrect: true },
-    { answerText: "Adeus", isCorrect: false },
-],
-},
-{
-  questionText: "Que Número é esse?",
-  answerOptions: [
-    { answerText: "Boa Noite", isCorrect: false },
-    { answerText: "Olá", isCorrect: false },
-    { answerText: "Bom Dia", isCorrect: true },
-    { answerText: "Adeus", isCorrect: false },
-],
-},
-{
-  questionText: "Que Número é esse?",
-  answerOptions: [
-    { answerText: "Boa Noite", isCorrect: false },
-    { answerText: "Olá", isCorrect: false },
-    { answerText: "Bom Dia", isCorrect: true },
-    { answerText: "Adeus", isCorrect: false },
-],
-},
-  {
-    questionText: "Que Número é esse?",
-    answerOptions: [
-      { answerText: "Boa Noite", isCorrect: false },
-      { answerText: "Olá", isCorrect: false },
-      { answerText: "Bom Dia", isCorrect: true },
-      { answerText: "Adeus", isCorrect: false },
-],
-},
-  {
-    questionText: "Que Número é esse?",
-    answerOptions: [
-      { answerText: "Boa Noite", isCorrect: false },
-      { answerText: "Olá", isCorrect: false },
-      { answerText: "Bom Dia", isCorrect: true },
-      { answerText: "Adeus", isCorrect: false },
-    ],
-  },
-  
-  
+  // Adicione mais perguntas aqui, incluindo `videoSrc` para cada uma
 ];
 
 function Quiz({ userName }) {
@@ -118,7 +49,7 @@ function Quiz({ userName }) {
     <div className="quiz">
       {showScore ? (
         <div className="score-section">
-          <h2>{userName}Você acertou {score} de {questions.length} perguntas!</h2>
+          <h2>{userName}, você acertou {score} de {questions.length} perguntas!</h2>
         </div>
       ) : (
         <>
@@ -128,6 +59,12 @@ function Quiz({ userName }) {
             </div>
             <div className="question-text">
               {questions[currentQuestion].questionText}
+            </div>
+            <div className="video-container">
+              <video width="100%" height="315" controls>
+                <source src={questions[currentQuestion].videoSrc} type="video/mp4" />
+                Seu navegador não suporta o elemento de vídeo.
+              </video>
             </div>
           </div>
           <div className="answer-section">
