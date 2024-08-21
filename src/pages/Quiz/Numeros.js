@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Quiz.css"; // CSS
+import { Link } from "react-router-dom";
 import video1 from "./videos/NUMEROS/01.mp4";
 import video2 from "./videos/NUMEROS/02.mp4";
 import video3 from "./videos/NUMEROS/03.mp4";
@@ -10,171 +11,127 @@ import video7 from "./videos/NUMEROS/07.mp4";
 import video8 from "./videos/NUMEROS/08.mp4";
 import video9 from "./videos/NUMEROS/09.mp4";
 import video10 from "./videos/NUMEROS/10.mp4";
-import video11 from "./videos/NUMEROS/11.mp4";
-import video12 from "./videos/NUMEROS/12.mp4";
+
+const createQuestion = (text, video, answers) => ({
+  questionText: text,
+  videoSrc: video,
+  answerOptions: answers,
+});
 
 const questions = [
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video1,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video2,
-    answerOptions: [
-      { answerText: "Boa Noite", isCorrect: false },
-      { answerText: "Olá", isCorrect: false },
-      { answerText: "Bom Dia", isCorrect: true },
-      { answerText: "Adeus", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video3,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video4,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video5,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video6,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video7,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video8,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video9,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video10,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video11,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  {
-    questionText: "Que Número é esse?",
-    videoSrc: video12,
-    answerOptions: [
-      { answerText: "A", isCorrect: true },
-      { answerText: "B", isCorrect: false },
-      { answerText: "C", isCorrect: false },
-      { answerText: "D", isCorrect: false },
-    ],
-  },
-  // Adicione mais perguntas aqui, incluindo `videoSrc` para cada uma
+  createQuestion("Que número é esse?", video1, [
+    { answerText: "36", isCorrect: false },
+    { answerText: "3", isCorrect: true },
+    { answerText: "1", isCorrect: false },
+    { answerText: "7", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video2, [
+    { answerText: "2", isCorrect: true },
+    { answerText: "6", isCorrect: false },
+    { answerText: "4", isCorrect: false },
+    { answerText: "9", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video3, [
+    { answerText: "10", isCorrect: false },
+    { answerText: "1", isCorrect: false },
+    { answerText: "4", isCorrect: true },
+    { answerText: "8", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video4, [
+    { answerText: "8", isCorrect: false },
+    { answerText: "7", isCorrect: false },
+    { answerText: "3", isCorrect: false },
+    { answerText: "5", isCorrect: true },
+  ]),
+  createQuestion("Que número é esse?", video5, [
+    { answerText: "3", isCorrect: false },
+    { answerText: "6", isCorrect: true },
+    { answerText: "1", isCorrect: false },
+    { answerText: "0", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video6, [
+    { answerText: "1", isCorrect: false },
+    { answerText: "7", isCorrect: true },
+    { answerText: "9", isCorrect: false },
+    { answerText: "4", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video7, [
+    { answerText: "2", isCorrect: false },
+    { answerText: "8", isCorrect: true },
+    { answerText: "5", isCorrect: false },
+    { answerText: "3", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video8, [
+    { answerText: "1", isCorrect: true },
+    { answerText: "4", isCorrect: false },
+    { answerText: "10", isCorrect: false },
+    { answerText: "8", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video9, [
+    { answerText: "1", isCorrect: false },
+    { answerText: "4", isCorrect: false },
+    { answerText: "9", isCorrect: true },
+    { answerText: "0", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video10, [
+    { answerText: "10", isCorrect: true },
+    { answerText: "1", isCorrect: false },
+    { answerText: "3", isCorrect: false },
+    { answerText: "6", isCorrect: false },
+  ]),
 ];
 
 function Quiz({ userName }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
-  const videoRef = useRef(null); // Referência para o elemento de vídeo
+  const [incorrectAnswers, setIncorrectAnswers] = useState([]);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+  const videoRef = useRef(null);
 
   useEffect(() => {
-    // Carrega e reproduz o vídeo correspondente à pergunta atual
     if (videoRef.current) {
       videoRef.current.load();
       videoRef.current.play();
     }
   }, [currentQuestion]);
 
-  const handleAnswerOptionClick = (isCorrect) => {
+  const handleAnswerOptionClick = (isCorrect, index) => {
+    setSelectedAnswerIndex(index);
+
     if (isCorrect) {
       setScore(score + 1);
-    }
-
-    // Pausa e reinicia o vídeo atual antes de mudar a pergunta
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-    }
-
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
     } else {
-      setShowScore(true);
+      setIncorrectAnswers([...incorrectAnswers, questions[currentQuestion]]);
     }
+
+    setTimeout(() => {
+      const nextQuestion = currentQuestion + 1;
+
+      if (nextQuestion < questions.length) {
+        if (videoRef.current) {
+          videoRef.current.pause();
+          videoRef.current.currentTime = 0;
+        }
+        setSelectedAnswerIndex(null);
+        setCurrentQuestion(nextQuestion);
+      } else {
+        setShowScore(true);
+      }
+    }, 1000); // Espera 1 segundo antes de passar para a próxima pergunta
   };
 
   return (
     <div className="quiz">
       {showScore ? (
         <div className="score-section">
-          <h2>{userName}, você acertou {score} de {questions.length} perguntas!</h2>
+          <h2>
+            {userName}Parabéns você acertou {score} de {questions.length} perguntas!
+          </h2>
+          {/* Botão de retorno à página inicial */}
+          <Link to="/" className="return-button">
+            Voltar para a página inicial
+          </Link>
         </div>
       ) : (
         <>
@@ -187,20 +144,37 @@ function Quiz({ userName }) {
             </div>
             <div className="video-container">
               <video ref={videoRef} width="100%" height="315" controls>
-                <source src={questions[currentQuestion].videoSrc} type="video/mp4" />
+                <source
+                  src={questions[currentQuestion].videoSrc}
+                  type="video/mp4"
+                />
                 Seu navegador não suporta o elemento de vídeo.
               </video>
             </div>
           </div>
           <div className="answer-section">
-            {questions[currentQuestion].answerOptions.map((answerOption, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}
-              >
-                {answerOption.answerText}
-              </button>
-            ))}
+            {questions[currentQuestion].answerOptions.map(
+              (answerOption, index) => (
+                <button
+                  key={index}
+                  onClick={() =>
+                    handleAnswerOptionClick(answerOption.isCorrect, index)
+                  }
+                  style={{
+                    backgroundColor:
+                      selectedAnswerIndex === index
+                        ? answerOption.isCorrect
+                          ? "green"
+                          : "red"
+                        : "",
+                    color: selectedAnswerIndex === index ? "white" : "",
+                  }}
+                  disabled={selectedAnswerIndex !== null}
+                >
+                  {answerOption.answerText}
+                </button>
+              )
+            )}
           </div>
         </>
       )}

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Quiz.css"; // CSS
+import { Link } from "react-router-dom";
 import video1 from "./videos/SAUDAÇÕES/01.mp4";
 import video2 from "./videos/SAUDAÇÕES/02.mp4";
 import video3 from "./videos/SAUDAÇÕES/03.mp4";
@@ -15,8 +16,19 @@ import video12 from "./videos/SAUDAÇÕES/12.mp4";
 import video13 from "./videos/SAUDAÇÕES/13.mp4";
 
 const videos = [
-  video1, video2, video3, video4, video5, video6, video7, 
-  video8, video9, video10, video11, video12, video13
+  video1,
+  video2,
+  video3,
+  video4,
+  video5,
+  video6,
+  video7,
+  video8,
+  video9,
+  video10,
+  video11,
+  video12,
+  video13,
 ];
 
 const createQuestion = (text, video, answers) => ({
@@ -111,6 +123,8 @@ function Quiz({ userName }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
+  const [incorrectAnswers, setIncorrectAnswers] = useState([]);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -120,22 +134,29 @@ function Quiz({ userName }) {
     }
   }, [currentQuestion]);
 
-  const handleAnswerOptionClick = (isCorrect) => {
+  const handleAnswerOptionClick = (isCorrect, index) => {
+    setSelectedAnswerIndex(index);
+
     if (isCorrect) {
       setScore(score + 1);
-    }
-
-    const nextQuestion = currentQuestion + 1;
-
-    if (nextQuestion < questions.length) {
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.currentTime = 0;
-      }
-      setCurrentQuestion(nextQuestion);
     } else {
-      setShowScore(true);
+      setIncorrectAnswers([...incorrectAnswers, questions[currentQuestion]]);
     }
+
+    setTimeout(() => {
+      const nextQuestion = currentQuestion + 1;
+
+      if (nextQuestion < questions.length) {
+        if (videoRef.current) {
+          videoRef.current.pause();
+          videoRef.current.currentTime = 0;
+        }
+        setSelectedAnswerIndex(null);
+        setCurrentQuestion(nextQuestion);
+      } else {
+        setShowScore(true);
+      }
+    }, 1000); // Espera 1 segundo antes de passar para a próxima pergunta
   };
 
   return (
@@ -143,8 +164,12 @@ function Quiz({ userName }) {
       {showScore ? (
         <div className="score-section">
           <h2>
-            {userName} Você acertou {score} de {questions.length} perguntas!
+            {userName}Parabéns você acertou {score} de {questions.length} perguntas!
           </h2>
+          {/* Botão de retorno à página inicial */}
+          <Link to="/" className="return-button">
+            Voltar para a página inicial
+          </Link>
         </div>
       ) : (
         <>
@@ -171,8 +196,18 @@ function Quiz({ userName }) {
                 <button
                   key={index}
                   onClick={() =>
-                    handleAnswerOptionClick(answerOption.isCorrect)
+                    handleAnswerOptionClick(answerOption.isCorrect, index)
                   }
+                  style={{
+                    backgroundColor:
+                      selectedAnswerIndex === index
+                        ? answerOption.isCorrect
+                          ? "green"
+                          : "red"
+                        : "",
+                    color: selectedAnswerIndex === index ? "white" : "",
+                  }}
+                  disabled={selectedAnswerIndex !== null}
                 >
                   {answerOption.answerText}
                 </button>
@@ -186,4 +221,3 @@ function Quiz({ userName }) {
 }
 
 export default Quiz;
-  
