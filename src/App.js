@@ -1,9 +1,11 @@
 import React from "react";
+import { Route, Routes } from "react-router-dom";
 import "./App.css"; // CSS principal
 import logo from "./img/LOGO.png";
 import abcImg from "./img/ABC.png";
 import saudacoesImg from "./img/SAUDAÇOES.png";
 import numeroImg from "./img/NUMERO.png";
+import Quiz from "./pages/Quiz";
 
 function App() {
   return (
@@ -18,7 +20,7 @@ function App() {
         <h3>ATIVIDADES</h3>
         <div className="activities">
           <a
-            href="https://kahoot.it/solo/?quizId=fdfca022-a08f-4e93-8676-734981889aaa"
+            href="/Quiz"
             className="activity-link"
           >
             <img
@@ -31,6 +33,8 @@ function App() {
           <a
             href="https://kahoot.it/solo/?quizId=1d372228-82e2-476b-871a-019ae28a39fd"
             className="activity-link"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <img
               src={saudacoesImg}
@@ -42,6 +46,8 @@ function App() {
           <a
             href="https://kahoot.it/solo/?quizId=fdfca022-a08f-4e93-8676-734981889aaa"
             className="activity-link"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <img
               src={numeroImg}
@@ -57,11 +63,15 @@ function App() {
       <footer className="App-footer">
         <p>&copy; 2024 Ensinando Libras. Todos os direitos reservados.</p>
         <p>
-          <a href="https://www.ensinandolibras.com.br/" className="footer-link">
+          <a href="https://www.ensinandolibras.com.br/" className="footer-link" target="_blank" rel="noopener noreferrer">
             Visite nosso site
           </a>
         </p>
       </footer>
+
+      <Routes>
+        <Route path="/Quiz" element={<Quiz />} />
+      </Routes>
     </div>
   );
 }
