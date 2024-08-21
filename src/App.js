@@ -5,7 +5,8 @@ import logo from "./img/LOGO.png";
 import abcImg from "./img/ABC.png";
 import saudacoesImg from "./img/SAUDAÇOES.png";
 import numeroImg from "./img/NUMERO.png";
-import Quiz from "./pages/Quiz";
+import Alfabeto from "./pages/Quiz/Alfabeto";
+import Saudações from "./pages/Quiz/Saudações";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
         <h3>ATIVIDADES</h3>
         <div className="activities">
           <a
-            href="/Quiz"
+            href="/Alfabeto"
             className="activity-link"
           >
             <img
@@ -31,7 +32,7 @@ function App() {
             <h4>Alfabeto em LIBRAS</h4>
           </a>
           <a
-            href="https://kahoot.it/solo/?quizId=1d372228-82e2-476b-871a-019ae28a39fd"
+            href="/Saudacoes"
             className="activity-link"
             target="_blank"
             rel="noopener noreferrer"
@@ -70,7 +71,8 @@ function App() {
       </footer>
 
       <Routes>
-        <Route path="/Quiz" element={<Quiz />} />
+        <Route path="/Saudacões" element={<Saudações/>} />
+        <Route path="/Alfabeto" element={<Alfabeto />} />
       </Routes>
     </div>
   );
