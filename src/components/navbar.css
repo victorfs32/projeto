@@ -7,7 +7,7 @@
   left: 0;
   width: 80%;
   padding: 10px 10%;
-  background: #2e8b57; /* Verde escuro */
+  background: #1e1e1e; /* Verde escuro */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,6 +21,11 @@
   font-weight: 700;
   font-family: "Poppins", sans-serif;
   text-decoration: none;
+}
+.logo img {
+    top: 0%;
+  height: 40px; /* Ajuste conforme necessário */
+  width: auto; /* Mantém a proporção da imagem */
 }
 
 .navbar {
