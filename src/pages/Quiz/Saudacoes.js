@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Quiz.css"; // CSS
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import video1 from "./videos/SAUDAÇÕES/01.mp4";
 import video2 from "./videos/SAUDAÇÕES/02.mp4";
 import video3 from "./videos/SAUDAÇÕES/03.mp4";
@@ -121,7 +121,7 @@ const questions = [
   // Continue adicionando as perguntas aqui da mesma forma
 ];
 
-function Quiz({ userName }) {
+function Saudacoes() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
@@ -132,18 +132,17 @@ function Quiz({ userName }) {
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
   const videoRef = useRef(null);
   const timerRef = useRef(null);
+  const location = useLocation();
+  const userName = location.state?.userName || "Usuário"; // Corrigido para pegar o nome do estado
 
   useEffect(() => {
     if (timerRunning) {
-      // Inicia o cronômetro
       timerRef.current = setInterval(() => {
         setTimer((prev) => {
           if (prev <= 1) {
             clearInterval(timerRef.current);
             setTimerRunning(false);
-            const correctIndex = questions[currentQuestion].answerOptions.findIndex(
-              (option) => option.isCorrect
-            );
+            const correctIndex = questions[currentQuestion].answerOptions.findIndex((option) => option.isCorrect);
             setCorrectAnswerIndex(correctIndex);
             handleAnswerOptionClick(false); // Se o tempo acabar, considera a resposta como errada
             return 0;
@@ -209,9 +208,8 @@ function Quiz({ userName }) {
       {showScore ? (
         <div className="score-section">
           <h2>
-            {userName} Parabéns! Você acertou {score} de {questions.length} perguntas!
+            {userName}, Parabéns! Você acertou {score} de {questions.length} perguntas!
           </h2>
-          {/* Botão de retorno à página inicial */}
           <Link to="/" className="return-button">
             Voltar para a página inicial
           </Link>
@@ -227,22 +225,13 @@ function Quiz({ userName }) {
             </div>
             <div className="video-container">
               <video ref={videoRef} width="100%" height="315" controls>
-                <source
-                  src={questions[currentQuestion].videoSrc}
-                  type="video/mp4"
-                />
+                <source src={questions[currentQuestion].videoSrc} type="video/mp4" />
                 Seu navegador não suporta o elemento de vídeo.
               </video>
             </div>
             <div className="timer">
               <span>Tempo Restante: {timer}s</span>
-              {/* Barra de progresso para o tempo restante */}
-              <progress
-                value={timer}
-                max={10}
-                className="progress-bar"
-                aria-label="Tempo Restante"
-              />
+              <progress value={timer} max={10} className="progress-bar" aria-label="Tempo Restante" />
             </div>
           </div>
           <div className="answer-section">
@@ -259,7 +248,10 @@ function Quiz({ userName }) {
                       : correctAnswerIndex === index
                       ? "green"
                       : "",
-                  color: selectedAnswerIndex === index || correctAnswerIndex === index ? "white" : "",
+                  color:
+                    selectedAnswerIndex === index || correctAnswerIndex === index
+                      ? "white"
+                      : "",
                 }}
                 disabled={selectedAnswerIndex !== null}
               >
@@ -273,4 +265,4 @@ function Quiz({ userName }) {
   );
 }
 
-export default Quiz;
+export default Saudacoes;

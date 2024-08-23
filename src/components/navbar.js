@@ -25,9 +25,8 @@ const Navbar = () => {
           </a>
           {dropdownOpen && (
             <div className="dropdown-content">
-              <a href="/Alfabeto">ALFABETO</a>
-              <a href="/Numeros">NUMEROS</a>
-              <a href="/Saudacoes">SAUDACÕES</a>
+              <a href="/Inicio">QUIZ</a>
+
             </div>
           )}
         </div>

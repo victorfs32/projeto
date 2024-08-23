@@ -7,16 +7,18 @@ import Saudacoes from "./pages/Quiz/Saudacoes";
 import Numeros from "./pages/Quiz/Numeros";
 import Navbar from "./components/navbar";
 import Sobre from "./pages/Sobre";
+import Inicio from "./pages/Inicio"; // Importa a nova página
 
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
+      <Route path="/Inicio" element={<Inicio />} /> {/* Nova rota */}
       <Route path="/Alfabeto" element={<Alfabeto />} />
       <Route path="/Saudacoes" element={<Saudacoes />} />
-      <Route path="/Numeros" element={<Numeros/>} />
-      <Route path="/Navbar" element={<Navbar/>} />
-      <Route path="/Sobre" element={<Sobre/>} />
+      <Route path="/Numeros" element={<Numeros />} />
+      <Route path="/Navbar" element={<Navbar />} />
+      <Route path="/Sobre" element={<Sobre />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
