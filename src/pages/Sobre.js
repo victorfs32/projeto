@@ -1,14 +1,18 @@
-import React from 'react';
-import Navbar from '../components/navbar';
-import './Sobre.css'; // Importa o arquivo CSS
+import React from "react";
+import Navbar from "../components/navbar";
+import "./Sobre.css"; // Importa o arquivo CSS
+import Footer from "../components/footer";
 
 const Sobre = () => {
   return (
     <>
       <Navbar />
-      <div className="sobre-container">
-        <h2 className="sobre-heading">EM BREVE</h2>
+      <div className="container">
+        <div className="box">
+          <h1 className="H1">EM BREVE!</h1>
+        </div>
       </div>
+      <Footer />
     </>
   );
 };
