@@ -28,6 +28,8 @@ import video24 from "./videos/ABC/24.mp4";
 import video25 from "./videos/ABC/25.mp4";
 import video26 from "./videos/ABC/26.mp4";
 import video27 from "./videos/ABC/27.mp4";
+import successSound from "./Path/success-sound.mp3";
+import errorSound from "./Path/error-sound.mp3";
 
 const videos = [
   video1, video2, video3, video4, video5, video6, video7, 
@@ -39,7 +41,7 @@ const videos = [
 const createQuestion = (text, video, answers) => ({
   questionText: text,
   videoSrc: video,
-  answerOptions: answers,
+  answerOptions: answers.sort(() => Math.random() - 0.5), // Embaralha as opções de resposta
 });
 
 const questions = [
@@ -121,13 +123,20 @@ function Quiz({ userName }) {
     }
   }, [currentQuestion]);
 
+  const playSound = (src) => {
+    const audio = new Audio(src);
+    audio.play();
+  };
+
   const handleAnswerOptionClick = (isCorrect, index) => {
     setSelectedAnswerIndex(index);
 
     if (isCorrect) {
       setScore(score + 1);
+      playSound(successSound); // Adiciona um feedback sonoro para respostas corretas
     } else {
       setIncorrectAnswers([...incorrectAnswers, questions[currentQuestion]]);
+      playSound(errorSound); // Adiciona um feedback sonoro para respostas incorretas
     }
 
     setTimeout(() => {
@@ -151,7 +160,7 @@ function Quiz({ userName }) {
       {showScore ? (
         <div className="score-section">
           <h2>
-            {userName}Parabéns você acertou {score} de {questions.length} perguntas!
+            {userName}, parabéns! Você acertou {score} de {questions.length} perguntas!
           </h2>
           {/* Botão de retorno à página inicial */}
           <Link to="/" className="return-button">
