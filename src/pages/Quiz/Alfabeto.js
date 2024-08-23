@@ -137,7 +137,7 @@ function Quiz({ userName }) {
   const [score, setScore] = useState(0);
   const [incorrectAnswers, setIncorrectAnswers] = useState([]);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(10);
   const [timerRunning, setTimerRunning] = useState(true);
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
   const videoRef = useRef(null);
@@ -173,7 +173,7 @@ function Quiz({ userName }) {
     }
 
     // Reseta o cronômetro ao trocar de pergunta
-    setTimer(30);
+    setTimer(10);
     setTimerRunning(true);
     setCorrectAnswerIndex(null);
   }, [currentQuestion]);
@@ -249,7 +249,7 @@ function Quiz({ userName }) {
               {/* Barra de progresso para o tempo restante */}
               <progress
                 value={timer}
-                max={30}
+                max={10}
                 className="progress-bar"
                 aria-label="Tempo Restante"
               />
