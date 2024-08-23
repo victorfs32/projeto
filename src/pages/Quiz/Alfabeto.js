@@ -32,10 +32,33 @@ import successSound from "./Path/success-sound.mp3";
 import errorSound from "./Path/error-sound.mp3";
 
 const videos = [
-  video1, video2, video3, video4, video5, video6, video7, 
-  video8, video9, video10, video11, video12, video13, video14,
-  video15, video16, video17, video18, video19, video20, video21,
-  video22, video23, video24, video25, video26, video27
+  video1,
+  video2,
+  video3,
+  video4,
+  video5,
+  video6,
+  video7,
+  video8,
+  video9,
+  video10,
+  video11,
+  video12,
+  video13,
+  video14,
+  video15,
+  video16,
+  video17,
+  video18,
+  video19,
+  video20,
+  video21,
+  video22,
+  video23,
+  video24,
+  video25,
+  video26,
+  video27,
 ];
 
 const createQuestion = (text, video, answers) => ({
@@ -160,7 +183,8 @@ function Quiz({ userName }) {
       {showScore ? (
         <div className="score-section">
           <h2>
-            {userName}, parabéns! Você acertou {score} de {questions.length} perguntas!
+            {userName}Parabéns! Você acertou {score} de {questions.length}{" "}
+            perguntas!
           </h2>
           {/* Botão de retorno à página inicial */}
           <Link to="/" className="return-button">
