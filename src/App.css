@@ -185,6 +185,7 @@ h3 {
   .App-header,
   .App-footer {
     padding: 10px;
+    margin-top: 25%;
     /* Reduz o padding do header e footer */
   }
 
