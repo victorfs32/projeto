@@ -211,7 +211,7 @@ function Quiz({ userName }) {
       } else {
         setShowScore(true);
       }
-    }, 2000); // Espera 1 segundo antes de passar para a próxima pergunta
+    }, 1500); // Espera 1 segundo antes de passar para a próxima pergunta
   };
 
   return (
@@ -246,6 +246,13 @@ function Quiz({ userName }) {
             </div>
             <div className="timer">
               <span>Tempo Restante: {timer}s</span>
+              {/* Barra de progresso para o tempo restante */}
+              <progress
+                value={timer}
+                max={30}
+                className="progress-bar"
+                aria-label="Tempo Restante"
+              />
             </div>
           </div>
           <div className="answer-section">
