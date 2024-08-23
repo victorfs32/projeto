@@ -1,28 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import "./navbar.css";
 import logo from "../img/LOGO.png";
 
 const Navbar = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <header className="header">
       <a href="/" className="logo">
-        <img
-          src={logo}
-          alt="Logo"
-        />
+        <img src={logo} alt="Logo" />
       </a>
 
       <nav className="navbar">
         <a href="/" className="nav-link">
           Home
         </a>
-        <a href="/atividades" className="nav-link">
-          Atividades
-        </a>
+        <div className="nav-link dropdown">
+          <a className="nav-link" onClick={toggleDropdown}>
+            Atividades
+          </a>
+          {dropdownOpen && (
+            <div className="dropdown-content">
+              <a href="/Alfabeto">ALFABETO</a>
+              <a href="/Numeros">NUMEROS</a>
+              <a href="/Saudacoes">SAUDACÕES</a>
+            </div>
+          )}
+        </div>
         <a href="/sobre" className="nav-link">
           Sobre
         </a>
       </nav>
+
     </header>
   );
 };
