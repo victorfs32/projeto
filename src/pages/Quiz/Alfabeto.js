@@ -152,7 +152,7 @@ function Quiz({ userName }) {
       } else {
         setShowScore(true);
       }
-    }, 2000); // Espera 1 segundo antes de passar para a próxima pergunta
+    }, 1500); // Espera 1 segundo antes de passar para a próxima pergunta
   };
 
   return (
