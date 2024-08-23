@@ -37,54 +37,6 @@ const questions = [
     { answerText: "4", isCorrect: false },
     { answerText: "9", isCorrect: false },
   ]),
-  createQuestion("Que número é esse?", video3, [
-    { answerText: "10", isCorrect: false },
-    { answerText: "1", isCorrect: false },
-    { answerText: "4", isCorrect: true },
-    { answerText: "8", isCorrect: false },
-  ]),
-  createQuestion("Que número é esse?", video4, [
-    { answerText: "8", isCorrect: false },
-    { answerText: "7", isCorrect: false },
-    { answerText: "3", isCorrect: false },
-    { answerText: "5", isCorrect: true },
-  ]),
-  createQuestion("Que número é esse?", video5, [
-    { answerText: "3", isCorrect: false },
-    { answerText: "6", isCorrect: true },
-    { answerText: "1", isCorrect: false },
-    { answerText: "0", isCorrect: false },
-  ]),
-  createQuestion("Que número é esse?", video6, [
-    { answerText: "1", isCorrect: false },
-    { answerText: "7", isCorrect: true },
-    { answerText: "9", isCorrect: false },
-    { answerText: "4", isCorrect: false },
-  ]),
-  createQuestion("Que número é esse?", video7, [
-    { answerText: "2", isCorrect: false },
-    { answerText: "8", isCorrect: true },
-    { answerText: "5", isCorrect: false },
-    { answerText: "3", isCorrect: false },
-  ]),
-  createQuestion("Que número é esse?", video8, [
-    { answerText: "1", isCorrect: true },
-    { answerText: "4", isCorrect: false },
-    { answerText: "10", isCorrect: false },
-    { answerText: "8", isCorrect: false },
-  ]),
-  createQuestion("Que número é esse?", video9, [
-    { answerText: "1", isCorrect: false },
-    { answerText: "4", isCorrect: false },
-    { answerText: "9", isCorrect: true },
-    { answerText: "0", isCorrect: false },
-  ]),
-  createQuestion("Que número é esse?", video10, [
-    { answerText: "10", isCorrect: true },
-    { answerText: "1", isCorrect: false },
-    { answerText: "3", isCorrect: false },
-    { answerText: "6", isCorrect: false },
-  ]),
 ];
 
 function Numeros() {
@@ -165,8 +117,15 @@ function Numeros() {
         setCurrentQuestion(nextQuestion);
       } else {
         setShowScore(true);
+        saveScore(userName, score + (isCorrect ? 1 : 0));
       }
     }, 1500); // Espera 1 segundo antes de passar para a próxima pergunta
+  };
+
+  const saveScore = (userName, score) => {
+    const existingScores = JSON.parse(localStorage.getItem("quizScores")) || [];
+    const updatedScores = [...existingScores, { userName, score }];
+    localStorage.setItem("quizScores", JSON.stringify(updatedScores));
   };
 
   return (
@@ -178,6 +137,9 @@ function Numeros() {
           </h2>
           <Link to="/" className="return-button">
             Voltar para a página inicial
+          </Link>
+          <Link to="/Ranking" className="ranking-button">
+            Ver Ranking
           </Link>
         </div>
       ) : (

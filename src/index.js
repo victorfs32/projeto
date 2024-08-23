@@ -8,6 +8,7 @@ import Numeros from "./pages/Quiz/Numeros";
 import Navbar from "./components/navbar";
 import Sobre from "./pages/Sobre";
 import Inicio from "./pages/Inicio"; // Importa a nova página
+import Ranking from "./pages/Ranking";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -19,6 +20,7 @@ ReactDOM.render(
       <Route path="/Numeros" element={<Numeros />} />
       <Route path="/Navbar" element={<Navbar />} />
       <Route path="/Sobre" element={<Sobre />} />
+      <Route path="/Ranking" element={<Ranking />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
