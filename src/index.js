@@ -6,6 +6,7 @@ import Alfabeto from "./pages/Quiz/Alfabeto";
 import Saudacoes from "./pages/Quiz/Saudacoes";
 import Numeros from "./pages/Quiz/Numeros";
 import Navbar from "./components/navbar";
+import Sobre from "./pages/Sobre";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -15,6 +16,7 @@ ReactDOM.render(
       <Route path="/Saudacoes" element={<Saudacoes />} />
       <Route path="/Numeros" element={<Numeros/>} />
       <Route path="/Navbar" element={<Navbar/>} />
+      <Route path="/Sobre" element={<Sobre/>} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

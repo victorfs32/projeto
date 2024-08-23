@@ -1,13 +1,6 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
 import "./App.css"; // CSS principal
 import logo from "./img/LOGO.png";
-import abcImg from "./img/ABC.png";
-import saudacoesImg from "./img/SAUDAÇOES.png";
-import numeroImg from "./img/NUMERO.png";
-import Alfabeto from "./pages/Quiz/Alfabeto";
-import Saudacoes from "./pages/Quiz/Saudacoes";
-import Numeros from "./pages/Quiz/Numeros";
 import Navbar from "./components/navbar"; // Nome do componente renomeado
 
 function App() {
