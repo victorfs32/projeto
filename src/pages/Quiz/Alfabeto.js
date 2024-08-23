@@ -137,13 +137,45 @@ function Quiz({ userName }) {
   const [score, setScore] = useState(0);
   const [incorrectAnswers, setIncorrectAnswers] = useState([]);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+  const [timer, setTimer] = useState(30);
+  const [timerRunning, setTimerRunning] = useState(true);
+  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
   const videoRef = useRef(null);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    if (timerRunning) {
+      // Inicia o cronômetro
+      timerRef.current = setInterval(() => {
+        setTimer((prev) => {
+          if (prev <= 1) {
+            clearInterval(timerRef.current);
+            setTimerRunning(false);
+            const correctIndex = questions[currentQuestion].answerOptions.findIndex(
+              (option) => option.isCorrect
+            );
+            setCorrectAnswerIndex(correctIndex);
+            handleAnswerOptionClick(false); // Se o tempo acabar, considera a resposta como errada
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => clearInterval(timerRef.current); // Limpa o intervalo ao sair da pergunta ou ao desmontar o componente
+  }, [timerRunning]);
 
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load();
       videoRef.current.play();
     }
+
+    // Reseta o cronômetro ao trocar de pergunta
+    setTimer(30);
+    setTimerRunning(true);
+    setCorrectAnswerIndex(null);
   }, [currentQuestion]);
 
   const playSound = (src) => {
@@ -152,7 +184,9 @@ function Quiz({ userName }) {
   };
 
   const handleAnswerOptionClick = (isCorrect, index) => {
-    setSelectedAnswerIndex(index);
+    if (timerRunning) {
+      setTimerRunning(false); // Para o cronômetro quando uma resposta é selecionada
+    }
 
     if (isCorrect) {
       setScore(score + 1);
@@ -161,6 +195,8 @@ function Quiz({ userName }) {
       setIncorrectAnswers([...incorrectAnswers, questions[currentQuestion]]);
       playSound(errorSound); // Adiciona um feedback sonoro para respostas incorretas
     }
+
+    setSelectedAnswerIndex(index);
 
     setTimeout(() => {
       const nextQuestion = currentQuestion + 1;
@@ -175,7 +211,7 @@ function Quiz({ userName }) {
       } else {
         setShowScore(true);
       }
-    }, 1500); // Espera 1 segundo antes de passar para a próxima pergunta
+    }, 2000); // Espera 1 segundo antes de passar para a próxima pergunta
   };
 
   return (
@@ -183,8 +219,7 @@ function Quiz({ userName }) {
       {showScore ? (
         <div className="score-section">
           <h2>
-            {userName}Parabéns! Você acertou {score} de {questions.length}{" "}
-            perguntas!
+            {userName} Parabéns! Você acertou {score} de {questions.length} perguntas!
           </h2>
           {/* Botão de retorno à página inicial */}
           <Link to="/" className="return-button">
@@ -209,30 +244,31 @@ function Quiz({ userName }) {
                 Seu navegador não suporta o elemento de vídeo.
               </video>
             </div>
+            <div className="timer">
+              <span>Tempo Restante: {timer}s</span>
+            </div>
           </div>
           <div className="answer-section">
-            {questions[currentQuestion].answerOptions.map(
-              (answerOption, index) => (
-                <button
-                  key={index}
-                  onClick={() =>
-                    handleAnswerOptionClick(answerOption.isCorrect, index)
-                  }
-                  style={{
-                    backgroundColor:
-                      selectedAnswerIndex === index
-                        ? answerOption.isCorrect
-                          ? "green"
-                          : "red"
-                        : "",
-                    color: selectedAnswerIndex === index ? "white" : "",
-                  }}
-                  disabled={selectedAnswerIndex !== null}
-                >
-                  {answerOption.answerText}
-                </button>
-              )
-            )}
+            {questions[currentQuestion].answerOptions.map((answerOption, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswerOptionClick(answerOption.isCorrect, index)}
+                style={{
+                  backgroundColor:
+                    selectedAnswerIndex === index
+                      ? answerOption.isCorrect
+                        ? "green"
+                        : "red"
+                      : correctAnswerIndex === index
+                      ? "green"
+                      : "",
+                  color: selectedAnswerIndex === index || correctAnswerIndex === index ? "white" : "",
+                }}
+                disabled={selectedAnswerIndex !== null}
+              >
+                {answerOption.answerText}
+              </button>
+            ))}
           </div>
         </>
       )}
