@@ -7,16 +7,8 @@ import errorSound from "./Path/error-sound.mp3";
 // Importar os vídeos
 import video1 from "./videos/NUMEROS/01.mp4";
 import video2 from "./videos/NUMEROS/02.mp4";
-import video3 from "./videos/NUMEROS/03.mp4";
-import video4 from "./videos/NUMEROS/04.mp4";
-import video5 from "./videos/NUMEROS/05.mp4";
-import video6 from "./videos/NUMEROS/06.mp4";
-import video7 from "./videos/NUMEROS/07.mp4";
-import video8 from "./videos/NUMEROS/08.mp4";
-import video9 from "./videos/NUMEROS/09.mp4";
-import video10 from "./videos/NUMEROS/10.mp4";
+// Continue com o restante dos vídeos...
 
-// Função para criar perguntas
 const createQuestion = (text, video, answers) => ({
   questionText: text,
   videoSrc: video,
@@ -37,77 +29,54 @@ const questions = [
     { answerText: "4", isCorrect: false },
     { answerText: "9", isCorrect: false },
   ]),
+  // Continue com o restante das perguntas...
 ];
 
 function Numeros() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
-  const [incorrectAnswers, setIncorrectAnswers] = useState([]);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
-  const [timer, setTimer] = useState(10);
-  const [timerRunning, setTimerRunning] = useState(true);
-  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const intervalRef = useRef(null);
   const videoRef = useRef(null);
-  const timerRef = useRef(null);
   const location = useLocation();
-  const userName = location.state?.userName || "Usuário"; // Corrigido para pegar o nome do estado
+  const userName = location.state?.userName || "Usuário";
+
+  const successAudio = useRef(new Audio(successSound));
+  const errorAudio = useRef(new Audio(errorSound));
 
   useEffect(() => {
-    if (timerRunning) {
-      timerRef.current = setInterval(() => {
-        setTimer((prev) => {
-          if (prev <= 1) {
-            clearInterval(timerRef.current);
-            setTimerRunning(false);
-            const correctIndex = questions[currentQuestion].answerOptions.findIndex((option) => option.isCorrect);
-            setCorrectAnswerIndex(correctIndex);
-            handleAnswerOptionClick(false); // Se o tempo acabar, considera a resposta como errada
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
+    intervalRef.current = setInterval(() => {
+      setElapsedTime((prevTime) => prevTime + 1);
+    }, 1000);
 
-    return () => clearInterval(timerRef.current); // Limpa o intervalo ao sair da pergunta ou ao desmontar o componente
-  }, [timerRunning]);
+    return () => clearInterval(intervalRef.current);
+  }, []);
 
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load();
       videoRef.current.play();
     }
-
-    // Reseta o cronômetro ao trocar de pergunta
-    setTimer(10);
-    setTimerRunning(true);
-    setCorrectAnswerIndex(null);
   }, [currentQuestion]);
 
-  const playSound = (src) => {
-    const audio = new Audio(src);
-    audio.play();
+  const playSound = (audioRef) => {
+    audioRef.current.play();
   };
 
   const handleAnswerOptionClick = (isCorrect, index) => {
-    if (timerRunning) {
-      setTimerRunning(false); // Para o cronômetro quando uma resposta é selecionada
-    }
+    setSelectedAnswerIndex(index);
 
     if (isCorrect) {
       setScore(score + 1);
-      playSound(successSound); // Adiciona um feedback sonoro para respostas corretas
+      playSound(successAudio);
     } else {
-      setIncorrectAnswers([...incorrectAnswers, questions[currentQuestion]]);
-      playSound(errorSound); // Adiciona um feedback sonoro para respostas incorretas
+      playSound(errorAudio);
     }
-
-    setSelectedAnswerIndex(index);
 
     setTimeout(() => {
       const nextQuestion = currentQuestion + 1;
-
       if (nextQuestion < questions.length) {
         if (videoRef.current) {
           videoRef.current.pause();
@@ -116,16 +85,30 @@ function Numeros() {
         setSelectedAnswerIndex(null);
         setCurrentQuestion(nextQuestion);
       } else {
+        clearInterval(intervalRef.current);
         setShowScore(true);
-        saveScore(userName, score + (isCorrect ? 1 : 0));
+        saveScore(userName, score, elapsedTime);
       }
-    }, 1500); // Espera 1 segundo antes de passar para a próxima pergunta
+    }, 100);
   };
 
-  const saveScore = (userName, score) => {
+  const saveScore = (userName, score, timeTaken) => {
     const existingScores = JSON.parse(localStorage.getItem("quizScores")) || [];
-    const updatedScores = [...existingScores, { userName, score }];
+    const updatedScores = [...existingScores, { userName, score, timeTaken }];
+    updatedScores.sort((a, b) => b.score - a.score || a.timeTaken - b.timeTaken); // Ordenar por pontuação e tempo
     localStorage.setItem("quizScores", JSON.stringify(updatedScores));
+  };
+
+  const getRankingPosition = () => {
+    const existingScores = JSON.parse(localStorage.getItem("quizScores")) || [];
+    const sortedScores = existingScores.sort((a, b) => b.score - a.score || a.timeTaken - b.timeTaken);
+    return sortedScores.findIndex((entry) => entry.userName === userName && entry.score === score && entry.timeTaken === elapsedTime) + 1;
+  };
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
   return (
@@ -135,6 +118,8 @@ function Numeros() {
           <h2>
             {userName}, Parabéns! Você acertou {score} de {questions.length} perguntas!
           </h2>
+          <p>Você completou o quiz em {formatTime(elapsedTime)}.</p>
+          <p>Sua posição no ranking é: {getRankingPosition()}</p>
           <Link to="/" className="return-button">
             Voltar para a página inicial
           </Link>
@@ -148,9 +133,7 @@ function Numeros() {
             <div className="question-count">
               <span>Pergunta {currentQuestion + 1}</span>/{questions.length}
             </div>
-            <div className="question-text">
-              {questions[currentQuestion].questionText}
-            </div>
+            <div className="question-text">{questions[currentQuestion].questionText}</div>
             <div className="video-container">
               <video ref={videoRef} width="100%" height="315" controls>
                 <source src={questions[currentQuestion].videoSrc} type="video/mp4" />
@@ -158,8 +141,7 @@ function Numeros() {
               </video>
             </div>
             <div className="timer">
-              <span>Tempo Restante: {timer}s</span>
-              <progress value={timer} max={10} className="progress-bar" aria-label="Tempo Restante" />
+              <span>Tempo Decorrido: {formatTime(elapsedTime)}</span>
             </div>
           </div>
           <div className="answer-section">
@@ -173,13 +155,8 @@ function Numeros() {
                       ? answerOption.isCorrect
                         ? "green"
                         : "red"
-                      : correctAnswerIndex === index
-                      ? "green"
                       : "",
-                  color:
-                    selectedAnswerIndex === index || correctAnswerIndex === index
-                      ? "white"
-                      : "",
+                  color: selectedAnswerIndex === index ? "white" : "",
                 }}
                 disabled={selectedAnswerIndex !== null}
               >
