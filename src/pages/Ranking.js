@@ -1,9 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Ranking.css";
 import Navbar from "../components/navbar";
 
 function Ranking() {
-  const [scores, setScores] = useState(JSON.parse(localStorage.getItem("quizScores")) || []);
+  const [scores, setScores] = useState([]);
+
+  useEffect(() => {
+    // Função para buscar pontuações do backend
+    const fetchScores = async () => {
+      try {
+        const response = await fetch('/api/getRanking');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setScores(data);
+      } catch (error) {
+        console.error('Error fetching scores:', error);
+      }
+    };
+
+    fetchScores();
+  }, []);
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
@@ -14,9 +32,18 @@ function Ranking() {
   // Ordenar as pontuações pelo menor tempo
   const sortedScores = scores.sort((a, b) => a.timeTaken - b.timeTaken);
 
-  const resetScores = () => {
-    localStorage.removeItem("quizScores");
-    setScores([]);
+  const resetScores = async () => {
+    try {
+      const response = await fetch('/api/resetScores', {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      setScores([]);
+    } catch (error) {
+      console.error('Error resetting scores:', error);
+    }
   };
 
   return (

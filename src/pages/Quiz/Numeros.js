@@ -38,6 +38,7 @@ function Numeros() {
   const [score, setScore] = useState(0);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [rankingPosition, setRankingPosition] = useState(null);
   const intervalRef = useRef(null);
   const videoRef = useRef(null);
   const location = useLocation();
@@ -60,6 +61,15 @@ function Numeros() {
       videoRef.current.play();
     }
   }, [currentQuestion]);
+
+  useEffect(() => {
+    if (showScore) {
+      // Atualiza a posição no ranking após mostrar a pontuação
+      getRankingPosition().then((position) => {
+        setRankingPosition(position);
+      });
+    }
+  }, [showScore]);
 
   const playSound = (audioRef) => {
     audioRef.current.play();
@@ -92,23 +102,51 @@ function Numeros() {
     }, 100);
   };
 
-  const saveScore = (userName, score, timeTaken) => {
-    const existingScores = JSON.parse(localStorage.getItem("quizScores")) || [];
-    const updatedScores = [...existingScores, { userName, score, timeTaken }];
-    updatedScores.sort((a, b) => b.score - a.score || a.timeTaken - b.timeTaken); // Ordenar por pontuação e tempo
-    localStorage.setItem("quizScores", JSON.stringify(updatedScores));
+  const saveScore = async (userName, score, timeTaken) => {
+    try {
+      const response = await fetch("/api/saveScore", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userName, score, timeTaken }),
+      });
+      if (!response.ok) {
+        throw new Error("Erro ao salvar a pontuação");
+      }
+    } catch (error) {
+      console.error("Error saving score:", error);
+    }
   };
 
-  const getRankingPosition = () => {
-    const existingScores = JSON.parse(localStorage.getItem("quizScores")) || [];
-    const sortedScores = existingScores.sort((a, b) => b.score - a.score || a.timeTaken - b.timeTaken);
-    return sortedScores.findIndex((entry) => entry.userName === userName && entry.score === score && entry.timeTaken === elapsedTime) + 1;
+  const getRankingPosition = async () => {
+    try {
+      const response = await fetch("/api/getRanking");
+      if (!response.ok) {
+        throw new Error("Erro ao buscar o ranking");
+      }
+      const scores = await response.json();
+      const sortedScores = scores.sort(
+        (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
+      );
+      return (
+        sortedScores.findIndex(
+          (entry) =>
+            entry.userName === userName &&
+            entry.score === score &&
+            entry.timeTaken === elapsedTime
+        ) + 1
+      );
+    } catch (error) {
+      console.error("Error fetching ranking:", error);
+      return null;
+    }
   };
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
   return (
@@ -116,10 +154,14 @@ function Numeros() {
       {showScore ? (
         <div className="score-section">
           <h2>
-            {userName}, Parabéns! Você acertou {score} de {questions.length} perguntas!
+            {userName}, Parabéns! Você acertou {score} de {questions.length}{" "}
+            perguntas!
           </h2>
           <p>Você completou o quiz em {formatTime(elapsedTime)}.</p>
-          <p>Sua posição no ranking é: {getRankingPosition()}</p>
+          <p>
+            Sua posição no ranking é:{" "}
+            {rankingPosition !== null ? rankingPosition : "Carregando..."}
+          </p>
           <Link to="/" className="return-button">
             Voltar para a página inicial
           </Link>
@@ -133,10 +175,15 @@ function Numeros() {
             <div className="question-count">
               <span>Pergunta {currentQuestion + 1}</span>/{questions.length}
             </div>
-            <div className="question-text">{questions[currentQuestion].questionText}</div>
+            <div className="question-text">
+              {questions[currentQuestion].questionText}
+            </div>
             <div className="video-container">
               <video ref={videoRef} width="100%" height="315" controls>
-                <source src={questions[currentQuestion].videoSrc} type="video/mp4" />
+                <source
+                  src={questions[currentQuestion].videoSrc}
+                  type="video/mp4"
+                />
                 Seu navegador não suporta o elemento de vídeo.
               </video>
             </div>
@@ -145,24 +192,28 @@ function Numeros() {
             </div>
           </div>
           <div className="answer-section">
-            {questions[currentQuestion].answerOptions.map((answerOption, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswerOptionClick(answerOption.isCorrect, index)}
-                style={{
-                  backgroundColor:
-                    selectedAnswerIndex === index
-                      ? answerOption.isCorrect
-                        ? "green"
-                        : "red"
-                      : "",
-                  color: selectedAnswerIndex === index ? "white" : "",
-                }}
-                disabled={selectedAnswerIndex !== null}
-              >
-                {answerOption.answerText}
-              </button>
-            ))}
+            {questions[currentQuestion].answerOptions.map(
+              (answerOption, index) => (
+                <button
+                  key={index}
+                  onClick={() =>
+                    handleAnswerOptionClick(answerOption.isCorrect, index)
+                  }
+                  style={{
+                    backgroundColor:
+                      selectedAnswerIndex === index
+                        ? answerOption.isCorrect
+                          ? "green"
+                          : "red"
+                        : "",
+                    color: selectedAnswerIndex === index ? "white" : "",
+                  }}
+                  disabled={selectedAnswerIndex !== null}
+                >
+                  {answerOption.answerText}
+                </button>
+              )
+            )}
           </div>
         </>
       )}
