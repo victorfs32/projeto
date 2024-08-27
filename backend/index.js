@@ -4,14 +4,12 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000; // Use PORT do ambiente se disponível
 
-// Caminho para o arquivo de resultados
 const RESULTS_FILE_PATH = path.join(__dirname, 'resultados.json');
 
 app.use(bodyParser.json());
 
-// Função para ler o arquivo de resultados
 const readResultsFile = () => {
   if (!fs.existsSync(RESULTS_FILE_PATH)) {
     fs.writeFileSync(RESULTS_FILE_PATH, JSON.stringify([]));
@@ -20,12 +18,10 @@ const readResultsFile = () => {
   return JSON.parse(data);
 };
 
-// Função para escrever no arquivo de resultados
 const writeResultsFile = (data) => {
   fs.writeFileSync(RESULTS_FILE_PATH, JSON.stringify(data, null, 2));
 };
 
-// Endpoint GET para obter os resultados
 app.get('/api/getRanking', (req, res) => {
   try {
     const results = readResultsFile();
@@ -35,7 +31,6 @@ app.get('/api/getRanking', (req, res) => {
   }
 });
 
-// Endpoint POST para salvar uma nova pontuação
 app.post('/api/saveScore', (req, res) => {
   try {
     const newScore = req.body;
@@ -48,7 +43,6 @@ app.post('/api/saveScore', (req, res) => {
   }
 });
 
-// Endpoint DELETE para apagar todos os resultados
 app.delete('/api/resetScores', (req, res) => {
   try {
     writeResultsFile([]);
