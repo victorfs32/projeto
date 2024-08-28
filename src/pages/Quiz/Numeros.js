@@ -130,7 +130,7 @@ function Numeros() {
   };
 
   return (
-    <div className="quiz-container">
+    <div className="quiz">
       {showScore ? (
         <div className="score-section">
           <h2 className="congratulations-message">
@@ -161,30 +161,23 @@ function Numeros() {
       ) : (
         <>
           <div className="question-section">
-            <div className="question-header">
-              <span className="question-count">
-                Pergunta {currentQuestion + 1}/{questions.length}
-              </span>
-              <div className="timer">
-                Tempo Decorrido:{" "}
-                <span className="time-highlight">
-                  {formatTime(elapsedTime)}
-                </span>
-              </div>
+            <div className="question-count">
+              <span>Pergunta {currentQuestion + 1}</span>/{questions.length}
             </div>
-            <div className="question-content">
-              <div className="question-text">
-                {questions[currentQuestion].questionText}
-              </div>
-              <div className="video-container">
-                <video ref={videoRef} width="100%" height="315" controls>
-                  <source
-                    src={questions[currentQuestion].videoSrc}
-                    type="video/mp4"
-                  />
-                  Seu navegador não suporta o elemento de vídeo.
-                </video>
-              </div>
+            <div className="question-text">
+              {questions[currentQuestion].questionText}
+            </div>
+            <div className="video-container">
+              <video ref={videoRef} width="100%" height="315" controls>
+                <source
+                  src={questions[currentQuestion].videoSrc}
+                  type="video/mp4"
+                />
+                Seu navegador não suporta o elemento de vídeo.
+              </video>
+            </div>
+            <div className="timer">
+              <span>Tempo Decorrido: {formatTime(elapsedTime)}</span>
             </div>
           </div>
           <div className="answer-section">
@@ -195,13 +188,15 @@ function Numeros() {
                   onClick={() =>
                     handleAnswerOptionClick(answerOption.isCorrect, index)
                   }
-                  className={`answer-button ${
-                    selectedAnswerIndex === index
-                      ? answerOption.isCorrect
-                        ? "correct"
-                        : "incorrect"
-                      : ""
-                  }`}
+                  style={{
+                    backgroundColor:
+                      selectedAnswerIndex === index
+                        ? answerOption.isCorrect
+                          ? "green"
+                          : "red"
+                        : "",
+                    color: selectedAnswerIndex === index ? "white" : "",
+                  }}
                   disabled={selectedAnswerIndex !== null}
                 >
                   {answerOption.answerText}
