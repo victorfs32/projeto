@@ -102,14 +102,14 @@ function Numeros() {
   };
 
   const saveScore = (userName, score, timeTaken) => {
-    const savedScores = JSON.parse(localStorage.getItem('quizScores')) || [];
+    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
     const newScore = { userName, score, timeTaken };
     savedScores.push(newScore);
-    localStorage.setItem('quizScores', JSON.stringify(savedScores));
+    localStorage.setItem("quizScores", JSON.stringify(savedScores));
   };
 
   const getRankingPosition = () => {
-    const savedScores = JSON.parse(localStorage.getItem('quizScores')) || [];
+    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
     const sortedScores = savedScores.sort(
       (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
     );
@@ -130,45 +130,61 @@ function Numeros() {
   };
 
   return (
-    <div className="quiz">
+    <div className="quiz-container">
       {showScore ? (
         <div className="score-section">
-          <h2>
-            {userName}, Parabéns! Você acertou {score} de {questions.length}{" "}
+          <h2 className="congratulations-message">
+            {userName}, Parabéns! Você acertou{" "}
+            <span className="score-highlight">{score}</span> de{" "}
+            <span className="score-highlight">{questions.length}</span>{" "}
             perguntas!
           </h2>
-          <p>Você completou o quiz em {formatTime(elapsedTime)}.</p>
-          <p>
-            Sua posição no ranking é:{" "}
-            {rankingPosition !== null ? rankingPosition : "Carregando..."}
+          <p className="completion-time">
+            Você completou o quiz em{" "}
+            <span className="time-highlight">{formatTime(elapsedTime)}</span>.
           </p>
-          <Link to="/" className="return-button">
-            Voltar para a página inicial
-          </Link>
-          <Link to="/Ranking" className="ranking-button">
-            Ver Ranking
-          </Link>
+          <p className="ranking-position">
+            Sua posição no ranking é:{" "}
+            <span className="ranking-highlight">
+              {rankingPosition !== null ? rankingPosition : "Carregando..."}
+            </span>
+          </p>
+          <div className="navigation-buttons">
+            <Link to="/" className="btn return-button">
+              Voltar para a página inicial
+            </Link>
+            <Link to="/Ranking" className="btn ranking-button">
+              Ver Ranking
+            </Link>
+          </div>
         </div>
       ) : (
         <>
           <div className="question-section">
-            <div className="question-count">
-              <span>Pergunta {currentQuestion + 1}</span>/{questions.length}
+            <div className="question-header">
+              <span className="question-count">
+                Pergunta {currentQuestion + 1}/{questions.length}
+              </span>
+              <div className="timer">
+                Tempo Decorrido:{" "}
+                <span className="time-highlight">
+                  {formatTime(elapsedTime)}
+                </span>
+              </div>
             </div>
-            <div className="question-text">
-              {questions[currentQuestion].questionText}
-            </div>
-            <div className="video-container">
-              <video ref={videoRef} width="100%" height="315" controls>
-                <source
-                  src={questions[currentQuestion].videoSrc}
-                  type="video/mp4"
-                />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
-            </div>
-            <div className="timer">
-              <span>Tempo Decorrido: {formatTime(elapsedTime)}</span>
+            <div className="question-content">
+              <div className="question-text">
+                {questions[currentQuestion].questionText}
+              </div>
+              <div className="video-container">
+                <video ref={videoRef} width="100%" height="315" controls>
+                  <source
+                    src={questions[currentQuestion].videoSrc}
+                    type="video/mp4"
+                  />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
             </div>
           </div>
           <div className="answer-section">
@@ -179,15 +195,13 @@ function Numeros() {
                   onClick={() =>
                     handleAnswerOptionClick(answerOption.isCorrect, index)
                   }
-                  style={{
-                    backgroundColor:
-                      selectedAnswerIndex === index
-                        ? answerOption.isCorrect
-                          ? "green"
-                          : "red"
-                        : "",
-                    color: selectedAnswerIndex === index ? "white" : "",
-                  }}
+                  className={`answer-button ${
+                    selectedAnswerIndex === index
+                      ? answerOption.isCorrect
+                        ? "correct"
+                        : "incorrect"
+                      : ""
+                  }`}
                   disabled={selectedAnswerIndex !== null}
                 >
                   {answerOption.answerText}
@@ -202,4 +216,3 @@ function Numeros() {
 }
 
 export default Numeros;
-  
