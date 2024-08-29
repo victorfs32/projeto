@@ -6,21 +6,10 @@ function Ranking() {
   const [scores, setScores] = useState([]);
 
   useEffect(() => {
-    // Função para buscar pontuações do backend
-    const fetchScores = async () => {
-      try {
-        const response = await fetch("https://backend-eosin-chi-12.vercel.app/api/ranking");
-        if (!response.ok) {
-          throw new Error("Erro ao buscar dados do ranking");
-        }
-        const data = await response.json();
-        setScores(data);
-      } catch (error) {
-        console.error("Erro ao buscar pontuações:", error);
-      }
-    };
-
-    fetchScores();
+    fetch('https://backend-eosin-chi-12.vercel.app/api/ranking')
+      .then(response => response.json())
+      .then(data => setScores(data))
+      .catch(error => console.error('Erro ao obter pontuações:', error));
   }, []);
 
   const formatTime = (timeInSeconds) => {
@@ -29,22 +18,18 @@ function Ranking() {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  // Ordenar as pontuações pelo menor tempo
   const sortedScores = scores.sort((a, b) => a.timeTaken - b.timeTaken);
 
-  const resetScores = async () => {
-    try {
-      // Enviar solicitação para apagar pontuações no backend
-      const response = await fetch("https://backend-eosin-chi-12.vercel.app/api/resetScores", {
-        method: "POST",
-      });
-      if (!response.ok) {
-        throw new Error("Erro ao resetar pontuações");
-      }
-      setScores([]);
-    } catch (error) {
-      console.error("Erro ao resetar pontuações:", error);
-    }
+  const resetScores = () => {
+    fetch('https://backend-eosin-chi-12.vercel.app/api/resetScores', {
+      method: 'POST',
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.message);
+        setScores([]);
+      })
+      .catch(error => console.error('Erro ao resetar pontuações:', error));
   };
 
   return (

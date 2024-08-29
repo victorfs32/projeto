@@ -102,23 +102,28 @@ function Numeros() {
     }, 100);
   };
 
-  const saveScore = async (userName, score, timeTaken) => {
-    try {
-      await fetch("https://backend-eosin-chi-12.vercel.app/api/saveScore", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userName, score, timeTaken }),
+  const saveScore = (userName, score, timeTaken) => {
+    fetch("https://backend-eosin-chi-12.vercel.app/api/addScore", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userName, score, timeTaken }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Resposta do Backend:", data);
+      })
+      .catch((error) => {
+        console.error("Erro ao salvar pontuação:", error);
       });
-    } catch (error) {
-      console.error("Erro ao salvar pontuação:", error);
-    }
   };
 
   const getRankingPosition = async () => {
     try {
-      const response = await fetch("https://backend-eosin-chi-12.vercel.app/api/ranking");
+      const response = await fetch(
+        "https://backend-eosin-chi-12.vercel.app/api/ranking"
+      );
       const savedScores = await response.json();
       const sortedScores = savedScores.sort(
         (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
