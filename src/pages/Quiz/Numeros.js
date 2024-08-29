@@ -15,7 +15,6 @@ const createQuestion = (text, video, answers) => ({
   answerOptions: answers,
 });
 
-// Lista de perguntas
 const questions = [
   createQuestion("Que número é esse?", video1, [
     { answerText: "36", isCorrect: false },
@@ -64,9 +63,11 @@ function Numeros() {
 
   useEffect(() => {
     if (showScore) {
-      // Atualiza a posição no ranking após mostrar a pontuação
-      const position = getRankingPosition();
-      setRankingPosition(position);
+      const fetchRankingPosition = async () => {
+        const position = await getRankingPosition();
+        setRankingPosition(position);
+      };
+      fetchRankingPosition();
     }
   }, [showScore]);
 
@@ -101,26 +102,39 @@ function Numeros() {
     }, 100);
   };
 
-  const saveScore = (userName, score, timeTaken) => {
-    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
-    const newScore = { userName, score, timeTaken };
-    savedScores.push(newScore);
-    localStorage.setItem("quizScores", JSON.stringify(savedScores));
+  const saveScore = async (userName, score, timeTaken) => {
+    try {
+      await fetch("https://backend-eosin-chi-12.vercel.app/api/saveScore", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userName, score, timeTaken }),
+      });
+    } catch (error) {
+      console.error("Erro ao salvar pontuação:", error);
+    }
   };
 
-  const getRankingPosition = () => {
-    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
-    const sortedScores = savedScores.sort(
-      (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
-    );
-    return (
-      sortedScores.findIndex(
-        (entry) =>
-          entry.userName === userName &&
-          entry.score === score &&
-          entry.timeTaken === elapsedTime
-      ) + 1
-    );
+  const getRankingPosition = async () => {
+    try {
+      const response = await fetch("https://backend-eosin-chi-12.vercel.app/api/ranking");
+      const savedScores = await response.json();
+      const sortedScores = savedScores.sort(
+        (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
+      );
+      return (
+        sortedScores.findIndex(
+          (entry) =>
+            entry.userName === userName &&
+            entry.score === score &&
+            entry.timeTaken === elapsedTime
+        ) + 1
+      );
+    } catch (error) {
+      console.error("Erro ao obter ranking:", error);
+      return null;
+    }
   };
 
   const formatTime = (timeInSeconds) => {
