@@ -65,8 +65,14 @@ function Numeros() {
   useEffect(() => {
     if (showScore) {
       // Atualiza a posição no ranking após mostrar a pontuação
-      const position = getRankingPosition();
-      setRankingPosition(position);
+      const fetchRankingPosition = async () => {
+        const response = await fetch("https://backend-eosin-chi-12.vercel.app/scores");
+        const results = await response.json();
+        const position = getRankingPosition(results);
+        setRankingPosition(position);
+      };
+
+      fetchRankingPosition();
     }
   }, [showScore]);
 
@@ -101,16 +107,26 @@ function Numeros() {
     }, 100);
   };
 
-  const saveScore = (userName, score, timeTaken) => {
-    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
-    const newScore = { userName, score, timeTaken };
-    savedScores.push(newScore);
-    localStorage.setItem("quizScores", JSON.stringify(savedScores));
+  const saveScore = async (userName, score, timeTaken) => {
+    try {
+      const response = await fetch("https://backend-eosin-chi-12.vercel.app/scores", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userName, score, timeTaken }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save score");
+      }
+    } catch (error) {
+      console.error("Error saving score:", error);
+    }
   };
 
-  const getRankingPosition = () => {
-    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
-    const sortedScores = savedScores.sort(
+  const getRankingPosition = (results) => {
+    const sortedScores = results.sort(
       (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
     );
     return (

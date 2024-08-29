@@ -6,11 +6,18 @@ function Ranking() {
   const [scores, setScores] = useState([]);
 
   useEffect(() => {
-    // Carregar pontuações do localStorage
-    const savedScores = localStorage.getItem('quizScores');
-    if (savedScores) {
-      setScores(JSON.parse(savedScores));
-    }
+    // Carregar pontuações do backend
+    const fetchScores = async () => {
+      try {
+        const response = await fetch("https://backend-eosin-chi-12.vercel.app/scores");
+        const data = await response.json();
+        setScores(data);
+      } catch (error) {
+        console.error("Erro ao buscar pontuações:", error);
+      }
+    };
+
+    fetchScores();
   }, []);
 
   const formatTime = (timeInSeconds) => {
@@ -22,10 +29,20 @@ function Ranking() {
   // Ordenar as pontuações pelo menor tempo
   const sortedScores = scores.sort((a, b) => a.timeTaken - b.timeTaken);
 
-  const resetScores = () => {
-    // Remover pontuações do localStorage
-    localStorage.removeItem('quizScores');
-    setScores([]);
+  const resetScores = async () => {
+    try {
+      const response = await fetch("https://backend-eosin-chi-12.vercel.app/scores", {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao remover resultados");
+      }
+
+      setScores([]);
+    } catch (error) {
+      console.error("Erro ao remover pontuações:", error);
+    }
   };
 
   return (
