@@ -5,7 +5,7 @@ const TestConnection = () => {
   const [response, setResponse] = useState('');
 
   const testBackend = () => {
-    fetch('/')
+    fetch('https://api.ensinandolibras.com.br/')
       .then(response => response.text())
       .then(data => {
         setResponse(`Resposta do Backend: ${data}`);
