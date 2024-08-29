@@ -20,7 +20,7 @@ const TestConnection = () => {
   };
 
   const testPost = () => {
-    fetch("https://backend-eosin-chi-12.vercel.app/scores", {
+    fetch("https://backend-eosin-chi-12.vercel.app/api/addScore", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
