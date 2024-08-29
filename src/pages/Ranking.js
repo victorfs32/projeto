@@ -29,30 +29,11 @@ function Ranking() {
   // Ordenar as pontuações pelo menor tempo
   const sortedScores = scores.sort((a, b) => a.timeTaken - b.timeTaken);
 
-  const resetScores = async () => {
-    try {
-      const response = await fetch("https://backend-eosin-chi-12.vercel.app/api/ranking", {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Falha ao remover resultados");
-      }
-
-      setScores([]);
-    } catch (error) {
-      console.error("Erro ao remover pontuações:", error);
-    }
-  };
-
   return (
     <>
       <Navbar />
       <div className="ranking">
         <h1>Ranking</h1>
-        <button className="reset-button" onClick={resetScores}>
-          Zerar Resultados
-        </button>
         <table>
           <thead>
             <tr>
