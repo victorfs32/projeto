@@ -18,6 +18,7 @@ function Ranking() {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
+  // Ordenar as pontuações pelo menor tempo
   const sortedScores = scores.sort((a, b) => a.timeTaken - b.timeTaken);
 
   const resetScores = () => {

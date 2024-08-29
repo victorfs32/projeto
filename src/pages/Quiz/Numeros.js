@@ -64,8 +64,22 @@ function Numeros() {
   useEffect(() => {
     if (showScore) {
       const fetchRankingPosition = async () => {
-        const position = await getRankingPosition();
-        setRankingPosition(position);
+        try {
+          const response = await fetch("https://backend-eosin-chi-12.vercel.app/api/ranking");
+          const savedScores = await response.json();
+          const sortedScores = savedScores.sort(
+            (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
+          );
+          const position = sortedScores.findIndex(
+            (entry) =>
+              entry.userName === userName &&
+              entry.score === score &&
+              entry.timeTaken === elapsedTime
+          ) + 1;
+          setRankingPosition(position);
+        } catch (error) {
+          console.error("Erro ao obter ranking:", error);
+        }
       };
       fetchRankingPosition();
     }
@@ -102,43 +116,19 @@ function Numeros() {
     }, 100);
   };
 
-  const saveScore = (userName, score, timeTaken) => {
-    fetch("https://backend-eosin-chi-12.vercel.app/api/addScore", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userName, score, timeTaken }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Resposta do Backend:", data);
-      })
-      .catch((error) => {
-        console.error("Erro ao salvar pontuação:", error);
-      });
-  };
-
-  const getRankingPosition = async () => {
+  const saveScore = async (userName, score, timeTaken) => {
     try {
-      const response = await fetch(
-        "https://backend-eosin-chi-12.vercel.app/api/ranking"
-      );
-      const savedScores = await response.json();
-      const sortedScores = savedScores.sort(
-        (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
-      );
-      return (
-        sortedScores.findIndex(
-          (entry) =>
-            entry.userName === userName &&
-            entry.score === score &&
-            entry.timeTaken === elapsedTime
-        ) + 1
-      );
+      const response = await fetch("https://backend-eosin-chi-12.vercel.app/api/addScore", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userName, score, timeTaken }),
+      });
+      const data = await response.json();
+      console.log("Resposta do Backend:", data);
     } catch (error) {
-      console.error("Erro ao obter ranking:", error);
-      return null;
+      console.error("Erro ao salvar pontuação:", error);
     }
   };
 
