@@ -22,20 +22,20 @@ function Ranking() {
   // Ordenar as pontuações pelo menor tempo
   const sortedScores = scores.sort((a, b) => a.timeTaken - b.timeTaken);
 
-<<<<<<< HEAD
   const resetScores = () => {
     // Remover pontuações do localStorage
     localStorage.removeItem('quizScores');
     setScores([]);
   };
 
-=======
->>>>>>> 9bf8a0fb8e8274d3d67cb79add87159eaa295dfb
   return (
     <>
       <Navbar />
       <div className="ranking">
         <h1>Ranking</h1>
+        <button className="reset-button" onClick={resetScores}>
+          Zerar Resultados
+        </button>
         <table>
           <thead>
             <tr>
