@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Ranking.css";
+import Navbar from "../components/navbar";
 
 function Ranking() {
   const [scores, setScores] = useState([]);
@@ -29,6 +30,7 @@ function Ranking() {
 
   return (
     <>
+      <Navbar />
       <div className="ranking">
         <h1>Ranking</h1>
         <table>
