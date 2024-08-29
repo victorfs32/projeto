@@ -65,16 +65,8 @@ function Numeros() {
   useEffect(() => {
     if (showScore) {
       // Atualiza a posição no ranking após mostrar a pontuação
-      const fetchRankingPosition = async () => {
-        const response = await fetch(
-          "https://backend-eosin-chi-12.vercel.app/scores"
-        );
-        const results = await response.json();
-        const position = getRankingPosition(results);
-        setRankingPosition(position);
-      };
-
-      fetchRankingPosition();
+      const position = getRankingPosition();
+      setRankingPosition(position);
     }
   }, [showScore]);
 
@@ -109,32 +101,16 @@ function Numeros() {
     }, 100);
   };
 
-  const saveScore = async (userName, score, timeTaken) => {
-    try {
-      const response = await fetch(
-        "https://backend-eosin-chi-12.vercel.app/scores",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userName, score, timeTaken }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to save score: ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      console.log("Score saved successfully:", result);
-    } catch (error) {
-      console.error("Error saving score:", error);
-    }
+  const saveScore = (userName, score, timeTaken) => {
+    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
+    const newScore = { userName, score, timeTaken };
+    savedScores.push(newScore);
+    localStorage.setItem("quizScores", JSON.stringify(savedScores));
   };
 
-  const getRankingPosition = (results) => {
-    const sortedScores = results.sort(
+  const getRankingPosition = () => {
+    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
+    const sortedScores = savedScores.sort(
       (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
     );
     return (
@@ -154,7 +130,7 @@ function Numeros() {
   };
 
   return (
-    <div className="quiz">
+    <div className="quiz-container">
       {showScore ? (
         <div className="score-section">
           <h2 className="congratulations-message">
@@ -185,23 +161,30 @@ function Numeros() {
       ) : (
         <>
           <div className="question-section">
-            <div className="question-count">
-              <span>Pergunta {currentQuestion + 1}</span>/{questions.length}
+            <div className="question-header">
+              <span className="question-count">
+                Pergunta {currentQuestion + 1}/{questions.length}
+              </span>
+              <div className="timer">
+                Tempo Decorrido:{" "}
+                <span className="time-highlight">
+                  {formatTime(elapsedTime)}
+                </span>
+              </div>
             </div>
-            <div className="question-text">
-              {questions[currentQuestion].questionText}
-            </div>
-            <div className="video-container">
-              <video ref={videoRef} width="100%" height="315" controls>
-                <source
-                  src={questions[currentQuestion].videoSrc}
-                  type="video/mp4"
-                />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
-            </div>
-            <div className="timer">
-              <span>Tempo Decorrido: {formatTime(elapsedTime)}</span>
+            <div className="question-content">
+              <div className="question-text">
+                {questions[currentQuestion].questionText}
+              </div>
+              <div className="video-container">
+                <video ref={videoRef} width="100%" height="315" controls>
+                  <source
+                    src={questions[currentQuestion].videoSrc}
+                    type="video/mp4"
+                  />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
             </div>
           </div>
           <div className="answer-section">
@@ -212,15 +195,13 @@ function Numeros() {
                   onClick={() =>
                     handleAnswerOptionClick(answerOption.isCorrect, index)
                   }
-                  style={{
-                    backgroundColor:
-                      selectedAnswerIndex === index
-                        ? answerOption.isCorrect
-                          ? "green"
-                          : "red"
-                        : "",
-                    color: selectedAnswerIndex === index ? "white" : "",
-                  }}
+                  className={`answer-button ${
+                    selectedAnswerIndex === index
+                      ? answerOption.isCorrect
+                        ? "correct"
+                        : "incorrect"
+                      : ""
+                  }`}
                   disabled={selectedAnswerIndex !== null}
                 >
                   {answerOption.answerText}
