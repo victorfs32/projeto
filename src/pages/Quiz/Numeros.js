@@ -66,7 +66,9 @@ function Numeros() {
     if (showScore) {
       // Atualiza a posição no ranking após mostrar a pontuação
       const fetchRankingPosition = async () => {
-        const response = await fetch("https://backend-eosin-chi-12.vercel.app/scores");
+        const response = await fetch(
+          "https://backend-eosin-chi-12.vercel.app/scores"
+        );
         const results = await response.json();
         const position = getRankingPosition(results);
         setRankingPosition(position);
@@ -109,17 +111,23 @@ function Numeros() {
 
   const saveScore = async (userName, score, timeTaken) => {
     try {
-      const response = await fetch("https://backend-eosin-chi-12.vercel.app/scores", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userName, score, timeTaken }),
-      });
+      const response = await fetch(
+        "https://backend-eosin-chi-12.vercel.app/scores",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userName, score, timeTaken }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Failed to save score");
+        throw new Error(`Failed to save score: ${response.statusText}`);
       }
+
+      const result = await response.json();
+      console.log("Score saved successfully:", result);
     } catch (error) {
       console.error("Error saving score:", error);
     }
