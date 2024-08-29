@@ -9,7 +9,7 @@ function Ranking() {
     // Carregar pontuações do backend
     const fetchScores = async () => {
       try {
-        const response = await fetch("https://backend-eosin-chi-12.vercel.app/scores");
+        const response = await fetch("https://backend-eosin-chi-12.vercel.app/api/ranking");
         const data = await response.json();
         setScores(data);
       } catch (error) {
@@ -31,7 +31,7 @@ function Ranking() {
 
   const resetScores = async () => {
     try {
-      const response = await fetch("https://backend-eosin-chi-12.vercel.app/scores", {
+      const response = await fetch("https://backend-eosin-chi-12.vercel.app/api/ranking", {
         method: "DELETE",
       });
 
