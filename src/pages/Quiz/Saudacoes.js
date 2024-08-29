@@ -125,71 +125,56 @@ function Saudacoes() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
-  const [incorrectAnswers, setIncorrectAnswers] = useState([]);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
-  const [timer, setTimer] = useState(10);
-  const [timerRunning, setTimerRunning] = useState(true);
-  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [rankingPosition, setRankingPosition] = useState(null);
+  const intervalRef = useRef(null);
   const videoRef = useRef(null);
-  const timerRef = useRef(null);
   const location = useLocation();
-  const userName = location.state?.userName || "Usuário"; // Corrigido para pegar o nome do estado
+  const userName = location.state?.userName || "Usuário";
+
+  const successAudio = useRef(new Audio(successSound));
+  const errorAudio = useRef(new Audio(errorSound));
 
   useEffect(() => {
-    if (timerRunning) {
-      timerRef.current = setInterval(() => {
-        setTimer((prev) => {
-          if (prev <= 1) {
-            clearInterval(timerRef.current);
-            setTimerRunning(false);
-            const correctIndex = questions[currentQuestion].answerOptions.findIndex((option) => option.isCorrect);
-            setCorrectAnswerIndex(correctIndex);
-            handleAnswerOptionClick(false); // Se o tempo acabar, considera a resposta como errada
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
+    intervalRef.current = setInterval(() => {
+      setElapsedTime((prevTime) => prevTime + 1);
+    }, 1000);
 
-    return () => clearInterval(timerRef.current); // Limpa o intervalo ao sair da pergunta ou ao desmontar o componente
-  }, [timerRunning]);
+    return () => clearInterval(intervalRef.current);
+  }, []);
 
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load();
       videoRef.current.play();
     }
-
-    // Reseta o cronômetro ao trocar de pergunta
-    setTimer(10);
-    setTimerRunning(true);
-    setCorrectAnswerIndex(null);
   }, [currentQuestion]);
 
-  const playSound = (src) => {
-    const audio = new Audio(src);
-    audio.play();
+  useEffect(() => {
+    if (showScore) {
+      // Atualiza a posição no ranking após mostrar a pontuação
+      const position = getRankingPosition();
+      setRankingPosition(position);
+    }
+  }, [showScore]);
+
+  const playSound = (audioRef) => {
+    audioRef.current.play();
   };
 
   const handleAnswerOptionClick = (isCorrect, index) => {
-    if (timerRunning) {
-      setTimerRunning(false); // Para o cronômetro quando uma resposta é selecionada
-    }
+    setSelectedAnswerIndex(index);
 
     if (isCorrect) {
       setScore(score + 1);
-      playSound(successSound); // Adiciona um feedback sonoro para respostas corretas
+      playSound(successAudio);
     } else {
-      setIncorrectAnswers([...incorrectAnswers, questions[currentQuestion]]);
-      playSound(errorSound); // Adiciona um feedback sonoro para respostas incorretas
+      playSound(errorAudio);
     }
-
-    setSelectedAnswerIndex(index);
 
     setTimeout(() => {
       const nextQuestion = currentQuestion + 1;
-
       if (nextQuestion < questions.length) {
         if (videoRef.current) {
           videoRef.current.pause();
@@ -198,66 +183,120 @@ function Saudacoes() {
         setSelectedAnswerIndex(null);
         setCurrentQuestion(nextQuestion);
       } else {
+        clearInterval(intervalRef.current);
         setShowScore(true);
+        saveScore(userName, score, elapsedTime);
       }
-    }, 1500); // Espera 1 segundo antes de passar para a próxima pergunta
+    }, 100);
+  };
+
+  const saveScore = (userName, score, timeTaken) => {
+    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
+    const newScore = { userName, score, timeTaken };
+    savedScores.push(newScore);
+    localStorage.setItem("quizScores", JSON.stringify(savedScores));
+  };
+
+  const getRankingPosition = () => {
+    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
+    const sortedScores = savedScores.sort(
+      (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
+    );
+    return (
+      sortedScores.findIndex(
+        (entry) =>
+          entry.userName === userName &&
+          entry.score === score &&
+          entry.timeTaken === elapsedTime
+      ) + 1
+    );
+  };
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
   return (
-    <div className="quiz">
+    <div className="quiz-container">
       {showScore ? (
         <div className="score-section">
-          <h2>
-            {userName}, Parabéns! Você acertou {score} de {questions.length} perguntas!
+          <h2 className="congratulations-message">
+            {userName}, Parabéns! Você acertou{" "}
+            <span className="score-highlight">{score}</span> de{" "}
+            <span className="score-highlight">{questions.length}</span>{" "}
+            perguntas!
           </h2>
-          <Link to="/" className="return-button">
-            Voltar para a página inicial
-          </Link>
+          <p className="completion-time">
+            Você completou o quiz em{" "}
+            <span className="time-highlight">{formatTime(elapsedTime)}</span>.
+          </p>
+          <p className="ranking-position">
+            Sua posição no ranking é:{" "}
+            <span className="ranking-highlight">
+              {rankingPosition !== null ? rankingPosition : "Carregando..."}
+            </span>
+          </p>
+          <div className="navigation-buttons">
+            <Link to="/" className="btn return-button">
+              Voltar para a página inicial
+            </Link>
+            <Link to="/Ranking" className="btn ranking-button">
+              Ver Ranking
+            </Link>
+          </div>
         </div>
       ) : (
         <>
           <div className="question-section">
-            <div className="question-count">
-              <span>Pergunta {currentQuestion + 1}</span>/{questions.length}
+            <div className="question-header">
+              <span className="question-count">
+                Pergunta {currentQuestion + 1}/{questions.length}
+              </span>
+              <div className="timer">
+                Tempo Decorrido:{" "}
+                <span className="time-highlight">
+                  {formatTime(elapsedTime)}
+                </span>
+              </div>
             </div>
-            <div className="question-text">
-              {questions[currentQuestion].questionText}
-            </div>
-            <div className="video-container">
-              <video ref={videoRef} width="100%" height="315" controls>
-                <source src={questions[currentQuestion].videoSrc} type="video/mp4" />
-                Seu navegador não suporta o elemento de vídeo.
-              </video>
-            </div>
-            <div className="timer">
-              <span>Tempo Restante: {timer}s</span>
-              <progress value={timer} max={10} className="progress-bar" aria-label="Tempo Restante" />
+            <div className="question-content">
+              <div className="question-text">
+                {questions[currentQuestion].questionText}
+              </div>
+              <div className="video-container">
+                <video ref={videoRef} width="100%" height="315" controls>
+                  <source
+                    src={questions[currentQuestion].videoSrc}
+                    type="video/mp4"
+                  />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
             </div>
           </div>
           <div className="answer-section">
-            {questions[currentQuestion].answerOptions.map((answerOption, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswerOptionClick(answerOption.isCorrect, index)}
-                style={{
-                  backgroundColor:
+            {questions[currentQuestion].answerOptions.map(
+              (answerOption, index) => (
+                <button
+                  key={index}
+                  onClick={() =>
+                    handleAnswerOptionClick(answerOption.isCorrect, index)
+                  }
+                  className={`answer-button ${
                     selectedAnswerIndex === index
                       ? answerOption.isCorrect
-                        ? "green"
-                        : "red"
-                      : correctAnswerIndex === index
-                      ? "green"
-                      : "",
-                  color:
-                    selectedAnswerIndex === index || correctAnswerIndex === index
-                      ? "white"
-                      : "",
-                }}
-                disabled={selectedAnswerIndex !== null}
-              >
-                {answerOption.answerText}
-              </button>
-            ))}
+                        ? "correct"
+                        : "incorrect"
+                      : ""
+                  }`}
+                  disabled={selectedAnswerIndex !== null}
+                >
+                  {answerOption.answerText}
+                </button>
+              )
+            )}
           </div>
         </>
       )}

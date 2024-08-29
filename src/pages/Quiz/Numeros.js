@@ -7,7 +7,14 @@ import errorSound from "./Path/error-sound.mp3";
 // Importar os vídeos
 import video1 from "./videos/NUMEROS/01.mp4";
 import video2 from "./videos/NUMEROS/02.mp4";
-// Continue com o restante dos vídeos...
+import video3 from "./videos/NUMEROS/03.mp4";
+import video4 from "./videos/NUMEROS/04.mp4";
+import video5 from "./videos/NUMEROS/05.mp4";
+import video6 from "./videos/NUMEROS/06.mp4";
+import video7 from "./videos/NUMEROS/07.mp4";
+import video8 from "./videos/NUMEROS/08.mp4";
+import video9 from "./videos/NUMEROS/09.mp4";
+import video10 from "./videos/NUMEROS/10.mp4";
 
 const createQuestion = (text, video, answers) => ({
   questionText: text,
@@ -29,7 +36,54 @@ const questions = [
     { answerText: "4", isCorrect: false },
     { answerText: "9", isCorrect: false },
   ]),
-  // Continue com o restante das perguntas...
+  createQuestion("Que número é esse?", video3, [
+    { answerText: "10", isCorrect: false },
+    { answerText: "1", isCorrect: false },
+    { answerText: "4", isCorrect: true },
+    { answerText: "8", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video4, [
+    { answerText: "8", isCorrect: false },
+    { answerText: "7", isCorrect: false },
+    { answerText: "3", isCorrect: false },
+    { answerText: "5", isCorrect: true },
+  ]),
+  createQuestion("Que número é esse?", video5, [
+    { answerText: "3", isCorrect: false },
+    { answerText: "6", isCorrect: true },
+    { answerText: "1", isCorrect: false },
+    { answerText: "0", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video6, [
+    { answerText: "1", isCorrect: false },
+    { answerText: "7", isCorrect: true },
+    { answerText: "9", isCorrect: false },
+    { answerText: "4", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video7, [
+    { answerText: "2", isCorrect: false },
+    { answerText: "8", isCorrect: true },
+    { answerText: "5", isCorrect: false },
+    { answerText: "3", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video8, [
+    { answerText: "1", isCorrect: true },
+    { answerText: "4", isCorrect: false },
+    { answerText: "10", isCorrect: false },
+    { answerText: "8", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video9, [
+    { answerText: "1", isCorrect: false },
+    { answerText: "4", isCorrect: false },
+    { answerText: "9", isCorrect: true },
+    { answerText: "0", isCorrect: false },
+  ]),
+  createQuestion("Que número é esse?", video10, [
+    { answerText: "10", isCorrect: true },
+    { answerText: "1", isCorrect: false },
+    { answerText: "3", isCorrect: false },
+    { answerText: "6", isCorrect: false },
+  ]),
 ];
 
 function Numeros() {
