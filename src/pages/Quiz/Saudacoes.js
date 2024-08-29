@@ -18,19 +18,9 @@ import successSound from "./Path/success-sound.mp3";
 import errorSound from "./Path/error-sound.mp3";
 
 const videos = [
-  video1,
-  video2,
-  video3,
-  video4,
-  video5,
-  video6,
-  video7,
-  video8,
-  video9,
-  video10,
-  video11,
-  video12,
-  video13,
+  video1, video2, video3, video4, video5, 
+      video6, video7, video8, video9, video10, 
+           video11, video12, video13,
 ];
 
 const createQuestion = (text, video, answers) => ({
