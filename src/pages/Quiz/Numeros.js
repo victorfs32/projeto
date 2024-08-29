@@ -101,34 +101,14 @@ function Numeros() {
     }, 100);
   };
 
-  // Atualização: Enviando a pontuação para o backend
-  const saveScore = async (userName, score, timeTaken) => {
-    try {
-      const response = await fetch(
-        "https://backend-eosin-chi-12.vercel.app/save-score",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userName, score, timeTaken }),
-        }
-      );
-
-      if (response.ok) {
-        console.log("Score saved successfully");
-      } else {
-        console.error("Failed to save score");
-      }
-    } catch (error) {
-      console.error("Error saving score:", error);
-    }
+  const saveScore = (userName, score, timeTaken) => {
+    const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
+    const newScore = { userName, score, timeTaken };
+    savedScores.push(newScore);
+    localStorage.setItem("quizScores", JSON.stringify(savedScores));
   };
 
   const getRankingPosition = () => {
-    // No momento, a posição no ranking é calculada localmente, mas você pode fazer uma requisição GET ao backend
-    // para obter a posição exata no ranking geral.
-    // Para simplicidade, este código mantém a lógica de ordenação local.
     const savedScores = JSON.parse(localStorage.getItem("quizScores")) || [];
     const sortedScores = savedScores.sort(
       (a, b) => b.score - a.score || a.timeTaken - b.timeTaken

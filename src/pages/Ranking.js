@@ -6,22 +6,11 @@ function Ranking() {
   const [scores, setScores] = useState([]);
 
   useEffect(() => {
-    // Carregar pontuações do arquivo JSON
-    const loadScores = async () => {
-      try {
-        const response = await fetch("/backend/resultados.json");
-        if (response.ok) {
-          const data = await response.json();
-          setScores(data);
-        } else {
-          console.error("Erro ao carregar os resultados");
-        }
-      } catch (error) {
-        console.error("Erro ao buscar os resultados:", error);
-      }
-    };
-
-    loadScores();
+    // Carregar pontuações do localStorage
+    const savedScores = localStorage.getItem('quizScores');
+    if (savedScores) {
+      setScores(JSON.parse(savedScores));
+    }
   }, []);
 
   const formatTime = (timeInSeconds) => {
@@ -30,25 +19,13 @@ function Ranking() {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  // Ordenar as pontuações por pontuação e depois pelo menor tempo
-  const sortedScores = scores.sort(
-    (a, b) => b.score - a.score || a.timeTaken - b.timeTaken
-  );
+  // Ordenar as pontuações pelo menor tempo
+  const sortedScores = scores.sort((a, b) => a.timeTaken - b.timeTaken);
 
-  const resetScores = async () => {
-    // Limpar os resultados no backend (se aplicável)
-    try {
-      await fetch("/backend/resultados.json", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([]),
-      });
-      setScores([]);
-    } catch (error) {
-      console.error("Erro ao limpar os resultados:", error);
-    }
+  const resetScores = () => {
+    // Remover pontuações do localStorage
+    localStorage.removeItem('quizScores');
+    setScores([]);
   };
 
   return (
