@@ -9,6 +9,9 @@ import Navbar from "./components/navbar";
 import Sobre from "./pages/Sobre";
 import Inicio from "./pages/Inicio"; // Importa a nova página
 import Ranking from "./pages/Ranking";
+import PagAlfabeto from "./components/PagAlfabeto";
+import PagNumeros from "./components/PagNumeros";
+import PagSaudacoes from "./components/PagSaudacoes";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -21,6 +24,9 @@ ReactDOM.render(
       <Route path="/Navbar" element={<Navbar />} />
       <Route path="/Sobre" element={<Sobre />} />
       <Route path="/Ranking" element={<Ranking />} />
+      <Route path="/PagAlf" element={<PagAlfabeto />} />
+      <Route path="/PagNúm" element={<PagNumeros />} />
+      <Route path="/PagSau" element={<PagSaudacoes />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
