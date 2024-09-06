@@ -46,7 +46,7 @@ const PagSaudacoes = () => {
       <Navbar />
       <div className="container">
         <header className="header">
-          <h1>Números</h1>
+          <h1>Saudações</h1>
           <input
             type="text"
             placeholder="Pesquisar número..."
