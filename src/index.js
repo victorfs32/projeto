@@ -12,6 +12,8 @@ import Ranking from "./pages/Ranking";
 import PagAlfabeto from "./components/PagAlfabeto";
 import PagNumeros from "./components/PagNumeros";
 import PagSaudacoes from "./components/PagSaudacoes";
+import PagPessoas from "./components/PagPessoas";
+import PagUnidades from "./components/PagUnidades";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -27,6 +29,8 @@ ReactDOM.render(
       <Route path="/PagAlf" element={<PagAlfabeto />} />
       <Route path="/PagNúm" element={<PagNumeros />} />
       <Route path="/PagSau" element={<PagSaudacoes />} />
+      <Route path="/PagPess" element={<PagPessoas/>} />
+      <Route path="/PagUni" element={<PagUnidades/>} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

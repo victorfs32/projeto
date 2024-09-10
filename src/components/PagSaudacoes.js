@@ -49,7 +49,7 @@ const PagSaudacoes = () => {
           <h1>Saudações</h1>
           <input
             type="text"
-            placeholder="Pesquisar número..."
+            placeholder="Pesquisar saudações..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
