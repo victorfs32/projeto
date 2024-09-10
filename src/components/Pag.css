@@ -78,7 +78,8 @@ video {
 /* Consultas de mídia para dispositivos móveis */
 @media (max-width: 768px) {
   .container {
-      padding: 10px; /* Reduz o padding em dispositivos menores */
+    margin-top: 55px;
+      padding: 50px; /* Reduz o padding em dispositivos menores */
   }
 
   .search-input {

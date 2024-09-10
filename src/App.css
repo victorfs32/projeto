@@ -126,7 +126,7 @@ h3 {
 /* Regras gerais para telas médias (ex.: tablets) */
 @media (min-width: 420px) and (max-width: 932px) {
   img.logo {
-    margin-top: 35%;
+    margin-top: 50%;
     max-width: 50%;
     max-height: 50%;
   }
