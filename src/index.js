@@ -14,6 +14,10 @@ import PagNumeros from "./components/PagNumeros";
 import PagSaudacoes from "./components/PagSaudacoes";
 import PagPessoas from "./components/PagPessoas";
 import PagUnidades from "./components/PagUnidades";
+import PagFamilia from "./components/PagFamilia";
+import PagNiveldeFarm from "./components/PagNiveldeFarm";
+import PagSemana from "./components/PagSemana";
+import PagMeses from "./components/PagMeses";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -31,6 +35,10 @@ ReactDOM.render(
       <Route path="/PagSau" element={<PagSaudacoes />} />
       <Route path="/PagPess" element={<PagPessoas/>} />
       <Route path="/PagUni" element={<PagUnidades/>} />
+      <Route path="/PagFam" element={<PagFamilia />} />
+      <Route path="/PagForm" element={<PagNiveldeFarm />} />
+      <Route path="/PagSem" element={<PagSemana />} />
+      <Route path="/PagMes" element={<PagMeses />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

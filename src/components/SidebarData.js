@@ -1,7 +1,5 @@
 import React from "react";
-import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
-import * as IoIcons from "react-icons/io";
 import { FaPerson } from "react-icons/fa6";
 import { RiCommunityFill } from "react-icons/ri";
 import { MdQuiz } from "react-icons/md";
@@ -9,6 +7,9 @@ import { FaBookmark } from "react-icons/fa";
 import { GoNumber } from "react-icons/go";
 import { TiSortAlphabetically } from "react-icons/ti";
 import { BsPersonRaisedHand } from "react-icons/bs";
+import { MdFamilyRestroom } from "react-icons/md";
+import { FaBook } from "react-icons/fa6";
+import { FaCalendarWeek } from "react-icons/fa";
 
 export const SidebarData = [
   {
@@ -45,6 +46,30 @@ export const SidebarData = [
     title: "Unidades",
     path: "/PagUni",
     icon: <RiCommunityFill />,
+    cName: "nav-text",
+  },
+  {
+    title: "Familia",
+    path: "/PagFam",
+    icon: <MdFamilyRestroom />,
+    cName: "nav-text",
+  },
+  {
+    title: "Formação",
+    path: "/PagForm",
+    icon: <FaBook />,
+    cName: "nav-text",
+  },
+  {
+    title: "Semana",
+    path: "/PagSem",
+    icon: <FaCalendarWeek />,
+    cName: "nav-text",
+  },
+  {
+    title: "Meses",
+    path: "/PagMes",
+    icon: <FaCalendarWeek />,
     cName: "nav-text",
   },
   {
