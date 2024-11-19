@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+🌟 Aprenda LIBRAS - Site Interativo de Inclusão
+Bem-vindo ao Aprenda LIBRAS, um site interativo que tem como objetivo tornar a Língua Brasileira de Sinais (LIBRAS) acessível, divertida e interessante para todos. Acreditamos que a comunicação inclusiva é essencial para quebrar barreiras e aproximar pessoas.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+🎯 Nosso Propósito
+Promover o aprendizado de LIBRAS para um público amplo, incluindo:
 
-## Available Scripts
+Jovens em escolas.
+Pessoas em hospitais.
+Qualquer pessoa interessada em desenvolver uma habilidade que transforma vidas.
+Queremos desmistificar preconceitos e estimular a inclusão, especialmente entre os jovens, usando atividades práticas e interativas.
 
-In the project directory, you can run:
+🕹️ O Que Você Encontra no Site?
+Nosso site oferece:
 
-### `npm start`
+Jogos interativos: para aprender sinais de maneira divertida.
+Atividades práticas: que ajudam na fixação do conteúdo.
+Recursos multimídia: vídeos e imagens que facilitam a compreensão.
+Certificados: ao completar módulos de aprendizado.
+💡 Por Que Aprender LIBRAS?
+Inclusão social: possibilita a comunicação com a comunidade surda.
+Quebra de barreiras: cria um mundo mais empático e acessível.
+Habilidade valorizada: essencial em contextos educacionais, profissionais e sociais.
+🚀 Como Participar?
+Acesse o site e crie sua conta.
+Escolha o módulo que deseja explorar.
+Divirta-se aprendendo e praticando LIBRAS com nossas atividades!
+🤝 Contribua com Nossa Missão
+Você pode nos ajudar a tornar LIBRAS ainda mais acessível:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Compartilhando o site com amigos e familiares.
+Enviando sugestões para melhorar nossos recursos.
+Divulgando nossa iniciativa em suas redes sociais.
+📩 Contato
+Caso tenha dúvidas ou sugestões, entre em contato conosco:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+E-mail: contato@aprendalibras.com
+Instagram: @aprendalibras
+WhatsApp: +55 (XX) XXXXX-XXXX
+Venha fazer parte dessa jornada inclusiva conosco! 🌈
